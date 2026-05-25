@@ -33,15 +33,17 @@ dry_run=0
 
 find_bin() {
   local name="$1"
-  local fallback="$2"
-  if [[ -x "$fallback" ]]; then
-    printf '%s\n' "$fallback"
-    return 0
-  fi
   if builtin command -v "$name" >/dev/null 2>&1; then
     builtin command -v "$name"
     return 0
   fi
+  local candidate
+  for candidate in "$HOME/.local/bin/$name" "/opt/homebrew/bin/$name" "/usr/local/bin/$name" "/usr/bin/$name"; do
+    if [[ -x "$candidate" ]]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
   return 1
 }
 
@@ -141,7 +143,7 @@ resolve_target() {
     fi
     if [[ -n "${TMUX_PANE:-}" ]]; then
       local tmux_bin
-      if tmux_bin="$(find_bin tmux /opt/homebrew/bin/tmux)"; then
+      if tmux_bin="$(find_bin tmux)"; then
         if "$tmux_bin" display-message -p -t "$TMUX_PANE" '#{pane_id}' >/dev/null 2>&1; then
           printf 'tmux\t%s\n' "$TMUX_PANE"
           return 0
@@ -157,7 +159,7 @@ resolve_target() {
     fi
     if [[ -n "${HERDR_PANE_ID:-}" ]]; then
       local herdr_bin
-      if herdr_bin="$(find_bin herdr /Users/kazuph/.local/bin/herdr)"; then
+      if herdr_bin="$(find_bin herdr)"; then
         local current_pane
         if current_pane="$("$herdr_bin" pane current 2>/dev/null)"; then
           printf 'herdr\t%s\n' "$current_pane"
@@ -234,14 +236,14 @@ send_notification() {
 
   case "$kind" in
     tmux)
-      "$(find_bin tmux /opt/homebrew/bin/tmux)" send-keys -t "$target_pane" "$line"
+      "$(find_bin tmux)" send-keys -t "$target_pane" "$line"
       sleep "$enter_sleep"
-      "$(find_bin tmux /opt/homebrew/bin/tmux)" send-keys -t "$target_pane" Enter
+      "$(find_bin tmux)" send-keys -t "$target_pane" Enter
       ;;
     herdr)
-      "$(find_bin herdr /Users/kazuph/.local/bin/herdr)" pane send-text "$target_pane" "$line"
+      "$(find_bin herdr)" pane send-text "$target_pane" "$line"
       sleep "$enter_sleep"
-      "$(find_bin herdr /Users/kazuph/.local/bin/herdr)" pane send-keys "$target_pane" Enter
+      "$(find_bin herdr)" pane send-keys "$target_pane" Enter
       ;;
   esac
 }
@@ -273,7 +275,7 @@ trap 'on_signal HUP 129' HUP
 
 set +u
 if [[ -n "${output_log:-}" ]]; then
-  tee_bin="$(find_bin tee /usr/bin/tee)"
+  tee_bin="$(find_bin tee)"
   "$@" > >("$tee_bin" -a "$output_log") 2>&1 &
 else
   "$@" &

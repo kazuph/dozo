@@ -16,7 +16,7 @@ Use this skill when:
 
 - A task is launched in the background and the user expects a completion notice.
 - A command may fail, be interrupted, or exit while the agent is working elsewhere.
-- The command output matters after exit, such as `npx reviw` review summaries.
+- The command output matters after exit, such as test output, CI output, or review summaries.
 - The current shell is inside tmux or Herdr.
 
 Do not use this skill when the shell is not inside tmux or Herdr; the helper will refuse to notify unless a supported pane target is available.
@@ -82,12 +82,22 @@ Herdr command reference verified:
 ```bash
 nohup ~/.claude/skills/exit-notifier/scripts/watch-exit-notify.sh \
   --include-output \
+  --label "long task" \
+  -- npm test \
+  > /tmp/exit-notifier-background.log 2>&1 &
+```
+
+The terminal pane receives a completion line and captured output when the watched command exits.
+
+For `reviw`, use the same generic wrapper:
+
+```bash
+nohup ~/.claude/skills/exit-notifier/scripts/watch-exit-notify.sh \
+  --include-output \
   --label "npx reviw REPORT.md" \
   -- npx reviw REPORT.md \
   > /tmp/reviw-background.log 2>&1 &
 ```
-
-The terminal pane receives a completion line and captured output when the watched command exits.
 
 ## Options
 
