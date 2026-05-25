@@ -79,6 +79,7 @@ claude plugin marketplace remove reviw-marketplace    # ターミナルで実行
 | `commit-and-push` | 変更内容からコミットメッセージを作り、commit / push / 最終状態確認まで実行する |
 | `do` | worktree 作成、計画策定、Todo 登録、レビュー準備を含むフルのタスク開始フローを始める |
 | `done` | 完了条件チェック、証跡収集、レビュー起動を含むフルのタスク完了フローを実行する |
+| `exit-notifier` | tmux / Herdr で background task の終了と stdout/stderr を現在 pane に通知する |
 | `open` | 直近で触れたファイルや URL、または明示したパスを macOS の `open` で開く |
 | `tiny-do` | 小さなタスク向けに、軽量な開始フローで実装へ入る |
 | `tiny-done` | 小さなタスク向けに、軽量な検証と確認フローで完了へ進む |
@@ -103,6 +104,7 @@ Task ツールで subagent_type: "e2e-health-reviewer" を指定
 | スキル | 説明 |
 |--------|------|
 | `artifact-proof` | エビデンス収集（スクショ・動画・ログ）+ reviw でのレビューワークフロー |
+| `exit-notifier` | background で実行した `npx reviw` などの終了結果と stdout/stderr を tmux / Herdr pane に返す |
 
 ### Hooks（自動フック）
 
@@ -172,6 +174,10 @@ reviw-plugin/
 │   │   └── SKILL.md         # タスク開始スキル
 │   ├── done/
 │   │   └── SKILL.md         # タスク完了スキル
+│   ├── exit-notifier/
+│   │   ├── SKILL.md         # background task 終了通知スキル
+│   │   └── scripts/
+│   │       └── watch-exit-notify.sh
 │   ├── tiny-do/
 │   │   └── SKILL.md         # 軽量タスク開始スキル
 │   ├── tiny-done/

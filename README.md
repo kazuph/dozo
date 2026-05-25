@@ -210,6 +210,10 @@ plugin/
 │   │   └── SKILL.md          # Task start skill
 │   ├── done/
 │   │   └── SKILL.md          # Task completion skill
+│   ├── exit-notifier/
+│   │   ├── SKILL.md          # Background task exit notification skill
+│   │   └── scripts/
+│   │       └── watch-exit-notify.sh
 │   ├── tiny-do/
 │   │   └── SKILL.md          # Lightweight task start skill
 │   ├── tiny-done/
@@ -247,6 +251,7 @@ plugin/
 | **Agent** | `review-e2e-integrity` | E2E: user flow reproduction, mock contamination |
 | **Agent** | `e2e-health-reviewer` | E2E: goto restrictions, record assertions, hardcoding |
 | **Skill** | `artifact-proof` | Collect evidence (screenshots, videos, logs) |
+| **Skill** | `exit-notifier` | Notify the current tmux / Herdr pane when background tasks exit, including captured stdout/stderr |
 | **Skill** | `webapp-testing` | Browser automation and verification with Playwright |
 | **Hook** | PreToolUse | Remind to review before git commit/push |
 | **Hook** | UserPromptSubmit | Inject completion checklist into AI context |
@@ -265,6 +270,7 @@ plugin/
 | `commit-and-push` | Generate a commit message, create the commit, push it, and confirm a clean git state |
 | `do` | Start the full task workflow with worktree setup, planning, and review preparation |
 | `done` | Run the full completion workflow with evidence collection and reviw-based review |
+| `exit-notifier` | Report background task completion and captured stdout/stderr back into the current tmux / Herdr pane |
 | `open` | Open files, artifacts, and URLs with macOS `open` |
 | `tiny-do` | Start a smaller task with the lightweight workflow |
 | `tiny-done` | Finish a smaller task with the lightweight completion flow |

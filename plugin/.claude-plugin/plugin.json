@@ -1,6 +1,6 @@
 {
   "name": "reviw-plugin",
-  "version": "1.8.3",
+  "version": "1.8.4",
   "description": "reviw CLI integration - task management skills, review workflow, and report generation agents. Supports web, backend, and mobile projects.",
   "author": {
     "name": "kazuph",
