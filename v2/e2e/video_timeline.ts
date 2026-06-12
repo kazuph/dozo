@@ -24,7 +24,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const ROOT = join(__dirname, "..", "..");
 const SERVER_JS = join(ROOT, "v2", "_build", "js", "release", "build", "server", "server.js");
 const FIXTURE_MD = join(ROOT, "examples", "mixed-media-test.md");
-const LOCK_DIR = join(tmpdir(), "reviw-video-timeline-locks");
+const LOCK_DIR = join(tmpdir(), "dozo-video-timeline-locks");
 const ARTIFACTS_DIR = join(ROOT, ".artifacts", "video-timeline");
 const BASE_PORT = 5361;
 
@@ -73,7 +73,7 @@ interface ServerHandle {
 async function startServer(testFile: string, preferredPort: number): Promise<ServerHandle> {
   const proc = spawn("node", [SERVER_JS, testFile, "--no-open", "--port", String(preferredPort)], {
     stdio: ["pipe", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
 
   let stdout = "";

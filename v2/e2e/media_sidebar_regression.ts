@@ -10,7 +10,7 @@ const SERVER_JS = new URL(
   import.meta.url,
 ).pathname;
 const FEATURES_MD = new URL("../../examples/test-features.md", import.meta.url).pathname;
-const LOCK_DIR = join(tmpdir(), "reviw-media-sidebar-locks");
+const LOCK_DIR = join(tmpdir(), "dozo-media-sidebar-locks");
 
 mkdirSync(LOCK_DIR, { recursive: true });
 
@@ -362,7 +362,7 @@ const proc = spawn(
   [SERVER_JS, "--no-open", "--port", String(BASE_PORT), FEATURES_MD],
   {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   },
 );
 

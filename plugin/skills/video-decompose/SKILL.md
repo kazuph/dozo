@@ -1,6 +1,6 @@
 ---
 name: video-decompose
-description: ffmpegで動画をシーン検出ベースのフレーム分解し、意味のあるキーフレームだけを抽出する。reviwのシーン検出ロジックと同じ手法を使用。
+description: ffmpegで動画をシーン検出ベースのフレーム分解し、意味のあるキーフレームだけを抽出する。dozoのシーン検出ロジックと同じ手法を使用。
 license: Complete terms in LICENSE.txt
 ---
 
@@ -17,7 +17,7 @@ license: Complete terms in LICENSE.txt
 
 ### 1. シーン検出ベースのフレーム抽出
 
-reviwと同じシーン検出アルゴリズムを使用する:
+dozoと同じシーン検出アルゴリズムを使用する:
 
 ```bash
 # 出力ディレクトリ作成

@@ -402,16 +402,16 @@ fn show_comment_card_in_rects(
 
 ///| Get localStorage key for comment storage (cli.cjs compatible)
 fn get_storage_key() -> String {
-  let filename = get_reviw_filename()
-  "reviw:comments:\{filename}"
+  let filename = get_dozo_filename()
+  "dozo:comments:\{filename}"
 }
 
 ///| Initialize the app - called on page load
 pub fn init_app() -> Unit {
-  let mode = get_reviw_mode()
-  let port = get_reviw_port()
+  let mode = get_dozo_mode()
+  let port = get_dozo_port()
   // Restore theme from localStorage
-  let saved_theme = local_storage_get("reviw:theme")
+  let saved_theme = local_storage_get("dozo:theme")
   if saved_theme.length() > 0 {
     set_theme(saved_theme)
     toggle_hljs_theme(saved_theme)
@@ -428,12 +428,12 @@ pub fn init_app() -> Unit {
         if current == "dark" {
           set_theme("light")
           toggle_hljs_theme("light")
-          local_storage_set("reviw:theme", "light")
+          local_storage_set("dozo:theme", "light")
           update_theme_button("light")
         } else {
           set_theme("dark")
           toggle_hljs_theme("dark")
-          local_storage_set("reviw:theme", "dark")
+          local_storage_set("dozo:theme", "dark")
           update_theme_button("dark")
         }
       },
@@ -948,7 +948,7 @@ fn save_comment() -> Unit {
 
 ///| Send a comment event to the server for real-time IPC
 fn send_comment_to_server(row : Int, col : Int, text : String, event_type : String, key : String, has_image : Bool) -> Unit {
-  let port = get_reviw_port()
+  let port = get_dozo_port()
   if port <= 0 {
     return
   }
@@ -1154,8 +1154,8 @@ fn build_review_payload() -> String {
     }
     buf.write_string(json_encode_string(img))
   }
-  buf.write_string("],\"reviwAnswers\":")
-  let answers_json = collect_reviw_answers()
+  buf.write_string("],\"dozoAnswers\":")
+  let answers_json = collect_dozo_answers()
   if answers_json.length() > 2 {
     buf.write_string(answers_json)
   } else {
@@ -1263,7 +1263,7 @@ fn init_view_toggle() -> Unit {
     return
   }
   // Load saved state — default is preview-only; show source only when explicitly saved
-  let saved = local_storage_get("reviw-panel-state")
+  let saved = local_storage_get("dozo-panel-state")
   if saved != "both" {
     add_class(md_layout, "preview-only")
     set_attribute(view_toggle, "title", "Show source panel")
@@ -1288,7 +1288,7 @@ fn init_view_toggle() -> Unit {
         remove_class(view_toggle, "active")
       }
       local_storage_set(
-        "reviw-panel-state",
+        "dozo-panel-state",
         if is_now_preview_only { "preview-only" } else { "both" },
       )
     },
@@ -1404,7 +1404,7 @@ fn toggle_history_panel() -> Unit {
 
 ///| Load history data from server
 fn load_history_data() -> Unit {
-  let _port = get_reviw_port()
+  let _port = get_dozo_port()
   let url = location_origin() + "/history"
   fetch_get(
     url,
@@ -1952,7 +1952,7 @@ fn _setup_video_timeline(video_path : String) -> Unit {
   if is_null(container) {
     return
   }
-  let _port = get_reviw_port()
+  let _port = get_dozo_port()
   let url = location_origin() + "/video-timeline?path=" + video_path
   let es = new_event_source_url(url)
   sse_on_message(es, fn(data) {
@@ -2736,23 +2736,23 @@ fn setup_preview_mouseup() -> Unit {
 
 ///| Setup questions UI (overlay, bar, auto-popup, answer tracking)
 fn setup_questions_ui() -> Unit {
-  let overlay = query("#reviw-questions-overlay")
-  let _bar = query("#reviw-questions-bar")
+  let overlay = query("#dozo-questions-overlay")
+  let _bar = query("#dozo-questions-bar")
   if is_null(overlay) {
     return
   }
   // Close button
-  let close_btn = query("#reviw-questions-close")
+  let close_btn = query("#dozo-questions-close")
   if !(is_null(close_btn)) {
     on(close_btn, "click", fn(_e) { close_questions_modal(false) })
   }
   // Later button
-  let later_btn = query("#reviw-questions-later")
+  let later_btn = query("#dozo-questions-later")
   if !(is_null(later_btn)) {
     on(later_btn, "click", fn(_e) { close_questions_modal(false) })
   }
   // Bar open button
-  let bar_open = query("#reviw-questions-bar-open")
+  let bar_open = query("#dozo-questions-bar-open")
   if !(is_null(bar_open)) {
     on(bar_open, "click", fn(_e) { open_questions_modal() })
   }
@@ -2765,7 +2765,7 @@ fn setup_questions_ui() -> Unit {
   // Escape to close
   on_doc("keydown", fn(e) {
     if event_key(e) == "Escape" {
-      let ov = query("#reviw-questions-overlay")
+      let ov = query("#dozo-questions-overlay")
       if !(is_null(ov)) && has_class(ov, "visible") {
         close_questions_modal(false)
       }
@@ -2795,7 +2795,7 @@ fn setup_questions_ui() -> Unit {
     on(area, "input", fn(_e) { update_questions_count() })
   }
   // Resolved toggle
-  let resolved_toggle = query(".reviw-resolved-toggle")
+  let resolved_toggle = query(".dozo-resolved-toggle")
   if !(is_null(resolved_toggle)) {
     on(resolved_toggle, "click", fn(_e) {
       if has_class(resolved_toggle, "open") {
@@ -2806,7 +2806,7 @@ fn setup_questions_ui() -> Unit {
     })
   }
   // Auto-popup if there are unresolved questions
-  let count_el = query("#reviw-questions-bar-count")
+  let count_el = query("#dozo-questions-bar-count")
   if !(is_null(count_el)) {
     let count_text = get_text_content(count_el)
     if count_text != "0" {
@@ -2818,11 +2818,11 @@ fn setup_questions_ui() -> Unit {
 
 ///| Open questions modal
 fn open_questions_modal() -> Unit {
-  let overlay = query("#reviw-questions-overlay")
+  let overlay = query("#dozo-questions-overlay")
   if !(is_null(overlay)) {
     add_class(overlay, "visible")
   }
-  let bar = query("#reviw-questions-bar")
+  let bar = query("#dozo-questions-bar")
   if !(is_null(bar)) {
     remove_class(bar, "visible")
     remove_class_body("has-questions-bar")
@@ -2831,13 +2831,13 @@ fn open_questions_modal() -> Unit {
 
 ///| Close questions modal
 fn close_questions_modal(_all_answered : Bool) -> Unit {
-  let overlay = query("#reviw-questions-overlay")
+  let overlay = query("#dozo-questions-overlay")
   if !(is_null(overlay)) {
     remove_class(overlay, "visible")
   }
   // Show bar if there are unanswered questions
   let unanswered = count_unanswered_questions()
-  let bar = query("#reviw-questions-bar")
+  let bar = query("#dozo-questions-bar")
   if unanswered > 0 && !(is_null(bar)) {
     add_class(bar, "visible")
     add_class_body("has-questions-bar")
@@ -2866,7 +2866,7 @@ fn count_unanswered_questions() -> Int {
 ///| Update questions count display
 fn update_questions_count() -> Unit {
   let unanswered = count_unanswered_questions()
-  let count_el = query("#reviw-questions-count")
+  let count_el = query("#dozo-questions-count")
   if !(is_null(count_el)) {
     if unanswered > 0 {
       set_inner_html(count_el, "(" + unanswered.to_string() + ")")
@@ -2874,7 +2874,7 @@ fn update_questions_count() -> Unit {
       set_inner_html(count_el, "")
     }
   }
-  let bar_count = query("#reviw-questions-bar-count")
+  let bar_count = query("#dozo-questions-bar-count")
   if !(is_null(bar_count)) {
     set_inner_html(bar_count, unanswered.to_string())
   }
@@ -2893,7 +2893,7 @@ fn _setup_heading_toggles() -> Unit {
     let key = get_attr(heading, "data-heading-key")
     let level = str_to_int(get_attr(heading, "data-heading-level"))
     // Restore state from localStorage
-    let stored = ls_get("reviw:heading:" + key)
+    let stored = ls_get("dozo:heading:" + key)
     if stored == "collapsed" {
       collapse_heading_section(heading, level)
       let icon = query_in(heading, ".heading-toggle-icon")
@@ -2915,13 +2915,13 @@ fn _setup_heading_toggles() -> Unit {
           remove_class(icon, "collapsed")
           set_inner_html(icon, "\u{25BC}")
           expand_heading_section(heading, level)
-          ls_set("reviw:heading:" + key, "expanded")
+          ls_set("dozo:heading:" + key, "expanded")
         } else {
           // Collapse
           add_class(icon, "collapsed")
           set_inner_html(icon, "\u{25B6}")
           collapse_heading_section(heading, level)
-          ls_set("reviw:heading:" + key, "collapsed")
+          ls_set("dozo:heading:" + key, "collapsed")
         }
       })
     }

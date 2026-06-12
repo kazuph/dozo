@@ -246,7 +246,7 @@ npx @playwright/mcp@latest
 | **agent-browser** | Rust製。CDPのAccessibility API直接利用。cursor:pointer要素も検出 | **深く探りたい時**。a11y問題の発見に強い |
 | **Playwright CLI** | MCP対応。差分snapshot（2回目以降は変更分だけ） | **トークン節約したい時**。AI連携に最適 |
 
-### ベンチマーク（reviw画面での対話的操作）
+### ベンチマーク（dozo画面での対話的操作）
 
 | | トークン | 速度 | 発見の深さ |
 |---|---|---|---|

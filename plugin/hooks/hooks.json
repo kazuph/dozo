@@ -1,5 +1,5 @@
 {
-  "description": "reviw plugin hooks - git wt guard, mock/stub detection, E2E enforcement, commit review reminders, and workflow enforcement",
+  "description": "dozo plugin hooks - git wt guard, mock/stub detection, E2E enforcement, commit review reminders, and workflow enforcement",
   "hooks": {
     "PreToolUse": [
       {
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE \"git commit|git push\"; then echo \"[reviw-plugin] Reminder: Have you run the /done skill and reviewed with reviw before committing?\"; fi'",
+            "command": "bash -c 'if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE \"git commit|git push\"; then echo \"[dozo-plugin] Reminder: Have you run the /done skill and reviewed with dozo before committing?\"; fi'",
             "timeout": 5
           }
         ],

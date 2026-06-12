@@ -4,7 +4,7 @@ description: Auto-generate commit message, commit all changes, and push
 allowed-tools: Bash, Read, Glob, Grep
 ---
 
-# /reviw-plugin:commit-and-push
+# /dozo-plugin:commit-and-push
 
 <command-name>commit-and-push</command-name>
 

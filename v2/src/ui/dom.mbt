@@ -203,18 +203,18 @@ extern "js" fn ls_remove(key : String) -> Unit =
   #|(key) => localStorage.removeItem(key)
 
 ///| Window globals
-extern "js" fn get_reviw_port() -> Int =
-  #|() => window.__REVIW_PORT__ || 4989
+extern "js" fn get_dozo_port() -> Int =
+  #|() => window.__DOZO_PORT__ || 4989
 
-extern "js" fn get_reviw_mode() -> String =
-  #|() => window.__REVIW_MODE__ || "text"
+extern "js" fn get_dozo_mode() -> String =
+  #|() => window.__DOZO_MODE__ || "text"
 
-extern "js" fn get_reviw_filename() -> String =
-  #|() => window.__REVIW_FILENAME__ || ""
+extern "js" fn get_dozo_filename() -> String =
+  #|() => window.__DOZO_FILENAME__ || ""
 
 extern "js" fn get_or_create_tab_id() -> String =
   #|() => {
-  #|  const key = "reviw:tab-id";
+  #|  const key = "dozo:tab-id";
   #|  try {
   #|    let id = sessionStorage.getItem(key);
   #|    if (!id) {
@@ -224,7 +224,7 @@ extern "js" fn get_or_create_tab_id() -> String =
   #|    return id;
   #|  } catch (_) {
   #|    if (!window.name) {
-  #|      window.name = `reviw-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+  #|      window.name = `dozo-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
   #|    }
   #|    return window.name;
   #|  }
@@ -744,8 +744,8 @@ extern "js" fn get_computed_style(el : Element, prop : String) -> String =
 extern "js" fn _children_count(el : Element) -> Int =
   #|(el) => el?.children?.length || 0
 
-///| Collect reviw answers from question panel
-extern "js" fn collect_reviw_answers() -> String =
+///| Collect dozo answers from question panel
+extern "js" fn collect_dozo_answers() -> String =
   #|() => {
   #|  var answers = {};
   #|  document.querySelectorAll('.question-card').forEach(function(item) {
@@ -956,7 +956,7 @@ extern "js" fn log_mermaid_errors_to_console() -> Unit =
   #|() => {
   #|  const errs = window.__mermaidErrors || [];
   #|  if (errs.length > 0) {
-  #|    console.error('[reviw] Mermaid has ' + errs.length + ' error(s):');
-  #|    errs.forEach(function(e, i) { console.error('[reviw] Mermaid error #' + (i+1) + ' (line ' + (e.line||'?') + '):', e.message || String(e)); });
+  #|    console.error('[dozo] Mermaid has ' + errs.length + ' error(s):');
+  #|    errs.forEach(function(e, i) { console.error('[dozo] Mermaid error #' + (i+1) + ' (line ' + (e.line||'?') + '):', e.message || String(e)); });
   #|  }
   #|}

@@ -36,7 +36,7 @@ if [ -n "$CONTENT" ] && printf '%s' "$CONTENT" | grep -qE "$MOCK_PATTERNS"; then
   "hookSpecificOutput": {
     "hookEventName": "PreToolUse",
     "permissionDecision": "deny",
-    "permissionDecisionReason": "[reviw-plugin] テストファイルにモック/スタブパターンを検出: ${DETECTED}\n\n禁止パターン: jest.fn(), jest.mock(), vi.fn(), vi.mock(), sinon.stub(), nock(), msw 等\n\n代わりに以下を使ってください:\n- 実際のサーバーを起動してPlaywright/ブラウザでテスト\n- vitest + 実プロセス起動の結合テスト\n- DI経由のローカルエミュレータ（Firebase Emulator等）は許可"
+    "permissionDecisionReason": "[dozo-plugin] テストファイルにモック/スタブパターンを検出: ${DETECTED}\n\n禁止パターン: jest.fn(), jest.mock(), vi.fn(), vi.mock(), sinon.stub(), nock(), msw 等\n\n代わりに以下を使ってください:\n- 実際のサーバーを起動してPlaywright/ブラウザでテスト\n- vitest + 実プロセス起動の結合テスト\n- DI経由のローカルエミュレータ（Firebase Emulator等）は許可"
   }
 }
 EOF
@@ -48,7 +48,7 @@ cat <<'EOF'
 {
   "hookSpecificOutput": {
     "hookEventName": "PreToolUse",
-    "additionalContext": "[reviw-plugin] テストファイルを書いています。モック/スタブは禁止です。実サーバー起動 + Playwright/vitest で実環境テストを書いてください。jest.fn(), vi.mock() 等を使うとブロックされます。"
+    "additionalContext": "[dozo-plugin] テストファイルを書いています。モック/スタブは禁止です。実サーバー起動 + Playwright/vitest で実環境テストを書いてください。jest.fn(), vi.mock() 等を使うとブロックされます。"
   }
 }
 EOF

@@ -971,44 +971,44 @@ fn build_css() -> String {
     #|  border-radius: 4px;
     #|  font-size: 11px;
     #|}
-    #|/* Reviw questions preview cards */
-    #|.reviw-questions-preview {
+    #|/* Dozo questions preview cards */
+    #|.dozo-questions-preview {
     #|  display: flex;
     #|  flex-direction: column;
     #|  gap: 8px;
     #|}
-    #|.reviw-q-card {
+    #|.dozo-q-card {
     #|  background: var(--code-bg);
     #|  border: 1px solid var(--border);
     #|  border-radius: 8px;
     #|  padding: 10px 12px;
     #|}
-    #|.reviw-q-card.resolved {
+    #|.dozo-q-card.resolved {
     #|  border-left: 3px solid #22c55e;
     #|}
-    #|.reviw-q-card.pending {
+    #|.dozo-q-card.pending {
     #|  border-left: 3px solid #f59e0b;
     #|}
-    #|.reviw-q-header {
+    #|.dozo-q-header {
     #|  font-size: 12px;
     #|  color: var(--text-dim);
     #|  margin-bottom: 4px;
     #|}
-    #|.reviw-q-header strong {
+    #|.dozo-q-header strong {
     #|  color: var(--accent);
     #|}
-    #|.reviw-q-question {
+    #|.dozo-q-question {
     #|  font-size: 13px;
     #|  color: var(--text);
     #|  margin-bottom: 6px;
     #|}
-    #|.reviw-q-options {
+    #|.dozo-q-options {
     #|  display: flex;
     #|  flex-wrap: wrap;
     #|  gap: 4px;
     #|  margin-bottom: 6px;
     #|}
-    #|.reviw-q-answer {
+    #|.dozo-q-answer {
     #|  font-size: 12px;
     #|  color: #22c55e;
     #|  background: rgba(34, 197, 94, 0.1);
@@ -1423,8 +1423,8 @@ fn build_css() -> String {
     #|  text-align: center;
     #|  margin-right: 2px;
     #|}
-    #|/* Reviw Questions Modal */
-    #|.reviw-questions-overlay {
+    #|/* Dozo Questions Modal */
+    #|.dozo-questions-overlay {
     #|  display: none;
     #|  position: fixed;
     #|  inset: 0;
@@ -1433,10 +1433,10 @@ fn build_css() -> String {
     #|  justify-content: center;
     #|  align-items: center;
     #|}
-    #|.reviw-questions-overlay.visible {
+    #|.dozo-questions-overlay.visible {
     #|  display: flex;
     #|}
-    #|.reviw-questions-modal {
+    #|.dozo-questions-modal {
     #|  background: var(--card-bg);
     #|  border: 1px solid var(--border);
     #|  border-radius: 16px;
@@ -1447,25 +1447,25 @@ fn build_css() -> String {
     #|  flex-direction: column;
     #|  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
     #|}
-    #|.reviw-questions-header {
+    #|.dozo-questions-header {
     #|  display: flex;
     #|  justify-content: space-between;
     #|  align-items: center;
     #|  padding: 16px 20px;
     #|  border-bottom: 1px solid var(--border);
     #|}
-    #|.reviw-questions-header h2 {
+    #|.dozo-questions-header h2 {
     #|  margin: 0;
     #|  font-size: 16px;
     #|  font-weight: 600;
     #|  color: var(--text);
     #|}
-    #|.reviw-questions-header h2 span {
+    #|.dozo-questions-header h2 span {
     #|  font-size: 14px;
     #|  color: var(--text-dim);
     #|  font-weight: 400;
     #|}
-    #|.reviw-questions-close {
+    #|.dozo-questions-close {
     #|  width: 32px;
     #|  height: 32px;
     #|  border: none;
@@ -1476,22 +1476,22 @@ fn build_css() -> String {
     #|  border-radius: 8px;
     #|  transition: all 150ms ease;
     #|}
-    #|.reviw-questions-close:hover {
+    #|.dozo-questions-close:hover {
     #|  background: var(--border);
     #|  color: var(--text);
     #|}
-    #|.reviw-questions-body {
+    #|.dozo-questions-body {
     #|  flex: 1;
     #|  overflow-y: auto;
     #|  padding: 16px 20px;
     #|}
-    #|.reviw-questions-footer {
+    #|.dozo-questions-footer {
     #|  padding: 12px 20px;
     #|  border-top: 1px solid var(--border);
     #|  display: flex;
     #|  justify-content: flex-end;
     #|}
-    #|.reviw-questions-later {
+    #|.dozo-questions-later {
     #|  padding: 8px 16px;
     #|  border: 1px solid var(--border);
     #|  background: transparent;
@@ -1501,34 +1501,34 @@ fn build_css() -> String {
     #|  font-size: 13px;
     #|  transition: all 150ms ease;
     #|}
-    #|.reviw-questions-later:hover {
+    #|.dozo-questions-later:hover {
     #|  background: var(--border);
     #|  color: var(--text);
     #|}
     #|/* Question Item */
-    #|.reviw-question-item {
+    #|.dozo-question-item {
     #|  margin-bottom: 20px;
     #|  padding-bottom: 20px;
     #|  border-bottom: 1px solid var(--border);
     #|}
-    #|.reviw-question-item:last-child {
+    #|.dozo-question-item:last-child {
     #|  margin-bottom: 0;
     #|  padding-bottom: 0;
     #|  border-bottom: none;
     #|}
-    #|.reviw-question-text {
+    #|.dozo-question-text {
     #|  font-size: 14px;
     #|  color: var(--text);
     #|  margin-bottom: 12px;
     #|  line-height: 1.5;
     #|}
-    #|.reviw-question-options {
+    #|.dozo-question-options {
     #|  display: flex;
     #|  flex-wrap: wrap;
     #|  gap: 8px;
     #|  margin-bottom: 12px;
     #|}
-    #|.reviw-question-option {
+    #|.dozo-question-option {
     #|  padding: 8px 14px;
     #|  border: 1px solid var(--border);
     #|  background: transparent;
@@ -1538,16 +1538,16 @@ fn build_css() -> String {
     #|  font-size: 13px;
     #|  transition: all 150ms ease;
     #|}
-    #|.reviw-question-option:hover {
+    #|.dozo-question-option:hover {
     #|  border-color: var(--accent);
     #|  background: rgba(96, 165, 250, 0.1);
     #|}
-    #|.reviw-question-option.selected {
+    #|.dozo-question-option.selected {
     #|  border-color: var(--accent);
     #|  background: var(--accent);
     #|  color: var(--text-inverse);
     #|}
-    #|.reviw-question-input {
+    #|.dozo-question-input {
     #|  width: 100%;
     #|  padding: 10px 12px;
     #|  border: 1px solid var(--border);
@@ -1558,22 +1558,22 @@ fn build_css() -> String {
     #|  resize: vertical;
     #|  min-height: 60px;
     #|}
-    #|.reviw-question-input:focus {
+    #|.dozo-question-input:focus {
     #|  outline: none;
     #|  border-color: var(--accent);
     #|}
-    #|.reviw-question-input::placeholder {
+    #|.dozo-question-input::placeholder {
     #|  color: var(--text-dim);
     #|}
-    #|.reviw-check-mark {
+    #|.dozo-check-mark {
     #|  color: #22c55e;
     #|  font-weight: bold;
     #|}
-    #|.reviw-question-item.answered {
+    #|.dozo-question-item.answered {
     #|  border-color: #22c55e;
     #|  background: rgba(34, 197, 94, 0.05);
     #|}
-    #|.reviw-question-submit {
+    #|.dozo-question-submit {
     #|  margin-top: 10px;
     #|  padding: 8px 16px;
     #|  border: none;
@@ -1585,20 +1585,20 @@ fn build_css() -> String {
     #|  font-weight: 500;
     #|  transition: all 150ms ease;
     #|}
-    #|.reviw-question-submit:hover {
+    #|.dozo-question-submit:hover {
     #|  filter: brightness(1.1);
     #|}
-    #|.reviw-question-submit:disabled {
+    #|.dozo-question-submit:disabled {
     #|  opacity: 0.5;
     #|  cursor: not-allowed;
     #|}
     #|/* Resolved Section */
-    #|.reviw-resolved-section {
+    #|.dozo-resolved-section {
     #|  margin-top: 16px;
     #|  border-top: 1px solid var(--border);
     #|  padding-top: 12px;
     #|}
-    #|.reviw-resolved-toggle {
+    #|.dozo-resolved-toggle {
     #|  display: flex;
     #|  align-items: center;
     #|  gap: 8px;
@@ -1609,43 +1609,43 @@ fn build_css() -> String {
     #|  cursor: pointer;
     #|  padding: 4px 0;
     #|}
-    #|.reviw-resolved-toggle:hover {
+    #|.dozo-resolved-toggle:hover {
     #|  color: var(--text);
     #|}
-    #|.reviw-resolved-toggle .arrow {
+    #|.dozo-resolved-toggle .arrow {
     #|  transition: transform 150ms ease;
     #|}
-    #|.reviw-resolved-toggle.open .arrow {
+    #|.dozo-resolved-toggle.open .arrow {
     #|  transform: rotate(90deg);
     #|}
-    #|.reviw-resolved-list {
+    #|.dozo-resolved-list {
     #|  display: none;
     #|  margin-top: 12px;
     #|}
-    #|.reviw-resolved-list.visible {
+    #|.dozo-resolved-list.visible {
     #|  display: block;
     #|}
-    #|.reviw-resolved-item {
+    #|.dozo-resolved-item {
     #|  padding: 10px 12px;
     #|  background: var(--input-bg);
     #|  border-radius: 8px;
     #|  margin-bottom: 8px;
     #|  opacity: 0.7;
     #|}
-    #|.reviw-resolved-item:last-child {
+    #|.dozo-resolved-item:last-child {
     #|  margin-bottom: 0;
     #|}
-    #|.reviw-resolved-q {
+    #|.dozo-resolved-q {
     #|  font-size: 12px;
     #|  color: var(--text-dim);
     #|  margin-bottom: 4px;
     #|}
-    #|.reviw-resolved-a {
+    #|.dozo-resolved-a {
     #|  font-size: 13px;
     #|  color: var(--text);
     #|}
     #|/* Notice Bar */
-    #|.reviw-questions-bar {
+    #|.dozo-questions-bar {
     #|  display: none;
     #|  position: fixed;
     #|  top: 0;
@@ -1660,10 +1660,10 @@ fn build_css() -> String {
     #|  align-items: center;
     #|  gap: 12px;
     #|}
-    #|.reviw-questions-bar.visible {
+    #|.dozo-questions-bar.visible {
     #|  display: flex;
     #|}
-    #|.reviw-questions-bar button {
+    #|.dozo-questions-bar button {
     #|  padding: 4px 12px;
     #|  border: 1px solid rgba(255, 255, 255, 0.3);
     #|  background: rgba(255, 255, 255, 0.1);
@@ -1673,7 +1673,7 @@ fn build_css() -> String {
     #|  font-size: 12px;
     #|  transition: all 150ms ease;
     #|}
-    #|.reviw-questions-bar button:hover {
+    #|.dozo-questions-bar button:hover {
     #|  background: rgba(255, 255, 255, 0.2);
     #|}
     #|/* Adjust layout when bar is visible */

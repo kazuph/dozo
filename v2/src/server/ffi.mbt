@@ -64,9 +64,18 @@ extern "js" fn js_null() -> JsValue =
 extern "js" fn js_is_nullish(value : JsValue) -> Bool =
   #|(value) => value == null
 
-///| Read stdin via /dev/stdin (Linux/macOS)
+///| readFileSync by file descriptor (avoids reopening /dev/stdin, which
+///| fails with EACCES when stdin is a spawned pipe on macOS)
+#module("node:fs")
+extern "js" fn fs_read_file_sync_fd(fd : Int, enc : String) -> String = "readFileSync"
+
+///| Guarded fd-0 read: closed/empty pipes read as "" instead of throwing
+extern "js" fn js_read_fd_guarded(read_fn : (Int, String) -> String) -> String =
+  #|(f) => { try { return f(0, "utf-8"); } catch (e) { return ""; } }
+
+///| Read all of stdin synchronously (fd 0)
 fn read_stdin_sync() -> String {
-  read_file_sync("/dev/stdin", "utf-8")
+  js_read_fd_guarded(fn(fd, enc) { fs_read_file_sync_fd(fd, enc) })
 }
 
 extern "js" fn is_stdin_tty() -> Bool =
@@ -532,7 +541,7 @@ fn spawn_async(cmd : String, args_json : String) -> JsValue {
 
 ///| Make temp directory
 fn make_temp_dir() -> String {
-  fs_mkdtemp_sync(os_tmpdir() + "/reviw-")
+  fs_mkdtemp_sync(os_tmpdir() + "/dozo-")
 }
 
 ///| Remove directory recursively

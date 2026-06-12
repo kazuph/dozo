@@ -24,7 +24,7 @@ if printf '%s' "$COMMAND" | grep -qE 'git\s+wt\s+(list|-l)\b'; then
   "hookSpecificOutput": {
     "hookEventName": "PreToolUse",
     "permissionDecision": "deny",
-    "permissionDecisionReason": "[reviw-plugin] \"git wt list\" は間違いです。\"list\" という名前のworktreeが作成されてしまいます。\n\nworktree一覧を表示するには:\n  ✅ git wt（引数なし）\n  ✅ git worktree list\n\n❌ git wt list（\"list\" worktreeが作られる）\n❌ git wt -l"
+    "permissionDecisionReason": "[dozo-plugin] \"git wt list\" は間違いです。\"list\" という名前のworktreeが作成されてしまいます。\n\nworktree一覧を表示するには:\n  ✅ git wt（引数なし）\n  ✅ git worktree list\n\n❌ git wt list（\"list\" worktreeが作られる）\n❌ git wt -l"
   }
 }
 EOF

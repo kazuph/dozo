@@ -89,14 +89,14 @@ nohup ~/.claude/skills/exit-notifier/scripts/watch-exit-notify.sh \
 
 The terminal pane receives a completion line and captured output when the watched command exits.
 
-For `reviw`, use the same generic wrapper:
+For `dozo`, use the same generic wrapper:
 
 ```bash
 nohup ~/.claude/skills/exit-notifier/scripts/watch-exit-notify.sh \
   --include-output \
-  --label "npx reviw REPORT.md" \
-  -- npx reviw REPORT.md \
-  > /tmp/reviw-background.log 2>&1 &
+  --label "npx dozo REPORT.md" \
+  -- npx dozo REPORT.md \
+  > /tmp/dozo-background.log 2>&1 &
 ```
 
 ## Options

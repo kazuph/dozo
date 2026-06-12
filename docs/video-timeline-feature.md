@@ -45,8 +45,8 @@ function checkFfmpeg() {
 - SSEでサムネイル情報をストリーミング返却
 - レスポンス形式:
   ```json
-  {"type": "thumbnail", "time": 1.5, "index": 0, "path": "/tmp/reviw-thumb-xxx/0001.jpg"}
-  {"type": "thumbnail", "time": 3.2, "index": 1, "path": "/tmp/reviw-thumb-xxx/0002.jpg"}
+  {"type": "thumbnail", "time": 1.5, "index": 0, "path": "/tmp/dozo-thumb-xxx/0001.jpg"}
+  {"type": "thumbnail", "time": 3.2, "index": 1, "path": "/tmp/dozo-thumb-xxx/0002.jpg"}
   {"type": "complete", "total": 15}
   ```
 
@@ -67,7 +67,7 @@ spawn('ffmpeg', [
 ```
 
 #### 4. 一時ファイル管理
-- `/tmp/reviw-timeline-<sessionId>/` にサムネイル保存
+- `/tmp/dozo-timeline-<sessionId>/` にサムネイル保存
 - サーバー終了時にクリーンアップ
 
 ### クライアントサイド（HTML/JS in cli.cjs）

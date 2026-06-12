@@ -5,7 +5,7 @@ argument-hint: <file-or-url>
 allowed-tools: Bash, Read
 ---
 
-# /reviw-plugin:open
+# /dozo-plugin:open
 
 <command-name>open</command-name>
 
@@ -15,8 +15,8 @@ macOSの`open`コマンドでファイルやURLを開きます。
 
 ### 引数ありの場合
 ```
-/reviw-plugin:open /path/to/file.png
-/reviw-plugin:open https://localhost:3000
+/dozo-plugin:open /path/to/file.png
+/dozo-plugin:open https://localhost:3000
 ```
 
 ### 引数なしの場合

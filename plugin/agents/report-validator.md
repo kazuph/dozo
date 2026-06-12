@@ -208,7 +208,7 @@ find .artifacts -name "REPORT.md" -type f 2>/dev/null | head -1
 
 | 違反数 | 対応 |
 |--------|------|
-| 0 | ✅ 検証パス → reviw起動へ進む |
+| 0 | ✅ 検証パス → dozo起動へ進む |
 | 1-2 | ⚠️ 警告 → report-builderに修正を依頼して再実行 |
 | 3+ | ❌ リジェクト → report-builderに修正を依頼して再実行 |
 

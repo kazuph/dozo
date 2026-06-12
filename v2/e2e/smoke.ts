@@ -1,5 +1,5 @@
 /**
- * E2E Smoke Test for reviw v2 server
+ * E2E Smoke Test for dozo v2 server
  * Verifies: server starts, serves HTML, healthz, SSE, submit flow, lock files
  *
  * Run: npx tsx e2e/smoke.ts
@@ -18,11 +18,11 @@ const SERVER_JS = new URL(
 ).pathname;
 
 // Lock directory for test servers (avoids EPERM in restricted environments)
-const LOCK_DIR = join(tmpdir(), "reviw-test-locks");
+const LOCK_DIR = join(tmpdir(), "dozo-test-locks");
 mkdirSync(LOCK_DIR, { recursive: true });
 
 // Create a temp markdown file for testing
-const TMP_DIR = join(tmpdir(), "reviw-test-tmp");
+const TMP_DIR = join(tmpdir(), "dozo-test-tmp");
 mkdirSync(TMP_DIR, { recursive: true });
 const TEST_MD = join(TMP_DIR, "test.md");
 writeFileSync(
@@ -113,7 +113,7 @@ async function runTest(
   console.log(`\n--- ${label} ---`);
   const proc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT), testFile], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
 
   let stdout = "";
@@ -196,8 +196,8 @@ lastTestResult = await runTest("Markdown Server", TEST_MD, "markdown", async (mo
   const html = await httpGet(port, "/");
   assert(html.status === 200, "HTML returns 200");
   assert(html.body.includes("<!DOCTYPE html>"), "HTML has doctype");
-  assert(html.body.includes("reviw"), "HTML contains reviw branding");
-  assert(html.body.includes(`__REVIW_MODE__="${mode}"`), `Mode is ${mode}`);
+  assert(html.body.includes("dozo"), "HTML contains dozo branding");
+  assert(html.body.includes(`__DOZO_MODE__="${mode}"`), `Mode is ${mode}`);
   assert(html.body.includes("<h1>"), "Rendered markdown has h1");
   assert(html.body.includes("md-preview"), "Has markdown preview pane");
   assert(html.body.includes("md-layout"), "Has markdown side-by-side layout");
@@ -223,7 +223,7 @@ lastTestResult = await runTest("Markdown Server", TEST_MD, "markdown", async (mo
 lastTestResult = await runTest("CSV Server", TEST_CSV, "csv", async (mode: string, port: number) => {
   const html = await httpGet(port, "/");
   assert(html.status === 200, "CSV HTML returns 200");
-  assert(html.body.includes(`__REVIW_MODE__="${mode}"`), `Mode is ${mode}`);
+  assert(html.body.includes(`__DOZO_MODE__="${mode}"`), `Mode is ${mode}`);
   assert(html.body.includes("<table"), "Has table element");
   assert(html.body.includes("Alice"), "Contains CSV data");
   assert(html.body.includes("data-row"), "Has data-row attributes");
@@ -517,7 +517,7 @@ console.log("\n--- Submit Data Persistence ---");
 {
   const submitProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 30), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   let sStdout = "";
   let sResolved = false;
@@ -542,7 +542,7 @@ console.log("\n--- Submit Data Persistence ---");
         { row: 3, col: 0, text: "line 3 comment with {braces} in text", image: "" },
       ],
       summaryImages: [],
-      reviwAnswers: { "q1": "answer to question 1" },
+      dozoAnswers: { "q1": "answer to question 1" },
     });
     // Server calls process.exit(0) after responding, which may close the socket
     // before the client fully reads the response. We handle both success and ECONNRESET.
@@ -571,7 +571,7 @@ console.log("\n--- Session Close Ordering ---");
 {
   const sessionProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 31), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   let sessionStdout = "";
   let sessionResolved = false;
@@ -712,7 +712,7 @@ if (playwrightAvailable) {
   console.log("\n--- Playwright Browser E2E ---");
   const browserProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 50), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   let bStdout = "";
   let bResolved = false;
@@ -754,11 +754,11 @@ if (playwrightAvailable) {
       if (!themeBtn) return { error: "no theme button" } as any;
       themeBtn.click();
       const afterToggle = html.getAttribute("data-theme");
-      const stored = localStorage.getItem("reviw:theme");
+      const stored = localStorage.getItem("dozo:theme");
       // Toggle back
       themeBtn.click();
       const afterSecond = html.getAttribute("data-theme");
-      const storedAfter = localStorage.getItem("reviw:theme");
+      const storedAfter = localStorage.getItem("dozo:theme");
       return { initialTheme, afterToggle, stored, afterSecond, storedAfter };
     });
     assert(themeResult.afterToggle !== themeResult.initialTheme, "Browser: theme toggles data-theme attribute");
@@ -773,11 +773,11 @@ if (playwrightAvailable) {
       const initialPreviewOnly = layout.classList.contains("preview-only");
       viewBtn.click();
       const afterClick = layout.classList.contains("preview-only");
-      const stored = localStorage.getItem("reviw-panel-state");
+      const stored = localStorage.getItem("dozo-panel-state");
       // Toggle back
       viewBtn.click();
       const afterSecond = layout.classList.contains("preview-only");
-      const storedAfter = localStorage.getItem("reviw-panel-state");
+      const storedAfter = localStorage.getItem("dozo-panel-state");
       return { initialPreviewOnly, afterClick, stored, afterSecond, storedAfter };
     });
     assert(viewResult.afterClick !== viewResult.initialPreviewOnly, "Browser: view toggle changes preview-only class");
@@ -810,12 +810,12 @@ if (playwrightAvailable) {
     assert(headHistory.status() === 200, "Browser HEAD: /history returns 200");
     assert((headHistory.headers()["content-type"] || "").includes("json"), "Browser HEAD: /history content-type");
 
-    // --- reviwAnswers selector check (no old selectors in DOM) ---
+    // --- dozoAnswers selector check (no old selectors in DOM) ---
     const selectorCheck = await page.evaluate(() => {
-      const oldCards = document.querySelectorAll(".reviw-question-item");
+      const oldCards = document.querySelectorAll(".dozo-question-item");
       return { oldSelectorCount: oldCards.length };
     });
-    assert(selectorCheck.oldSelectorCount === 0, "Browser: no .reviw-question-item in DOM (old selector removed)");
+    assert(selectorCheck.oldSelectorCount === 0, "Browser: no .dozo-question-item in DOM (old selector removed)");
 
     // --- XSS: no script tags in preview ---
     const xssCheck = await page.evaluate(() => {
@@ -943,7 +943,7 @@ if (playwrightAvailable) {
     // --- Close detection: reload must not terminate, final close must flush draft and exit ---
     const closeProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 51), TEST_MD], {
       stdio: ["ignore", "pipe", "pipe"],
-      env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+      env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
     });
     let closeStdout = "";
     let closeResolved = false;
@@ -1028,7 +1028,7 @@ async function testDecisionSubmit(
   console.log(`\n--- ${label} ---`);
   const proc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + portOffset), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   let stdout = "";
   proc.stdout!.on("data", (d: Buffer) => (stdout += d));
@@ -1085,14 +1085,14 @@ await testDecisionSubmit(
   console.log("\n--- Live comment IPC test ---");
   const liveProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 62), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   let liveStderr = "";
   liveProc.stderr!.on("data", (d: Buffer) => (liveStderr += d));
   liveProc.stdout!.on("data", () => {});
   try {
     await waitForServer(BASE_PORT + 62, 5000);
-    // Wait a beat for stderr to flush the REVIW_LIVE line
+    // Wait a beat for stderr to flush the DOZO_LIVE line
     await sleep(500);
     // Send a comment
     const commentRes = await httpPost(BASE_PORT + 62, "/comment", JSON.stringify({
@@ -1106,7 +1106,7 @@ await testDecisionSubmit(
     // Small delay to let file write complete
     await sleep(200);
     // Extract live log path from stderr
-    const liveMatch = liveStderr.match(/\[REVIW_LIVE\]\s+(.+\.jsonl)/);
+    const liveMatch = liveStderr.match(/\[DOZO_LIVE\]\s+(.+\.jsonl)/);
     assert(!!liveMatch, "Live log path printed to stderr");
     if (liveMatch) {
       const logPath = liveMatch[1].trim();
@@ -1151,7 +1151,7 @@ await testDecisionSubmit(
   console.log("\n--- Restart healthz test ---");
   const restartProc = spawn("node", [SERVER_JS, "--no-open", "--port", String(BASE_PORT + 66), TEST_MD], {
     stdio: ["ignore", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
   restartProc.stdout!.on("data", () => {});
   restartProc.stderr!.on("data", () => {});

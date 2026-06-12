@@ -1,7 +1,7 @@
 {
   "is-main": true,
   "import": [
-    { "path": "kazuph/reviw/core", "alias": "core" }
+    { "path": "kazuph/dozo/core", "alias": "core" }
   ],
   "link": {
     "js": {

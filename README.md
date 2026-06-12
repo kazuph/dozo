@@ -1,22 +1,56 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/kazuph/reviw/main/assets/logo.svg" alt="reviw - Human-in-the-loop Review" width="600">
+  <img src="https://raw.githubusercontent.com/kazuph/dozo/main/assets/hero.png" alt="dozo — a voxel robot serving tea while an engineer reads a report" width="720">
 </p>
 
 <p align="center">
-  <strong>Human-in-the-loop review interface for AI coding workflows</strong>
+  <strong>Human-in-the-loop approval gate for AI coding workflows</strong>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/reviw"><img src="https://img.shields.io/npm/v/reviw.svg" alt="npm version"></a>
-  <a href="https://github.com/kazuph/reviw/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/reviw.svg" alt="license"></a>
+  <a href="https://www.npmjs.com/package/dozo"><img src="https://img.shields.io/npm/v/dozo.svg" alt="npm version"></a>
+  <a href="https://github.com/kazuph/dozo/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/dozo.svg" alt="license"></a>
   <a href="./README.ja.md">日本語</a>
 </p>
 
 ---
 
-# reviw
+# dozo 🍵
 
-A lightweight browser-based tool for reviewing and annotating tabular data, text, Markdown, and diff files. Built entirely in [MoonBit](https://www.moonbitlang.com/) (zero hand-written JavaScript). Supports CSV, TSV, plain text, Markdown, and unified diff formats. Comments are output as YAML to stdout.
+> **Installation: none.** Just tell your AI — *"run `npx dozo`"* — and it will know what to do.
+
+**dozo**（どうぞ）is what you say in Japan when you set a cup of tea in front of a guest. Palms open, a slight bow — *"here you go."*
+
+## The story
+
+dozo was not built for humans to demand *"show me what you did."*
+It is the opposite gesture.
+
+Every time an AI agent finishes a piece of work, it doesn't just say "done."
+It brews a report — what it changed, why, the evidence, the test results — places it on a tray, and serves it to you:
+
+```bash
+npx dozo REPORT.md
+```
+
+*Dozo.* 🍵
+
+Your browser opens. You read at your own pace. You leave comments, you approve — or you hand it back. The agent waits the way good service waits: quietly, until you decide. When you submit, dozo exits and returns your decision to the agent as structured YAML, and the loop continues until you say it's good.
+
+In the vibe coding era, humans no longer read every diff. What we review is the work itself: **intent, changes, and proof**. dozo is the moment of handoff between AI work and human judgment — served politely, every single time.
+
+## Getting started (the only step)
+
+Tell your AI agent:
+
+> *"From now on, run `npx dozo` when you finish your work."*
+
+That's it. When the agent runs `npx dozo` with no arguments, dozo prints a skill document that teaches the agent everything: how to write a good report, how to serve it, how to read your verdict, and how to loop until you approve. The agent will then offer to install dozo as a permanent skill — answer yes once, and you never have to mention it again.
+
+No global install. No plugin setup. No config. The tea serves itself.
+
+---
+
+dozo (formerly **reviw**) is a lightweight browser-based tool for reviewing and annotating Markdown reports, tabular data, text, and diff files. Built entirely in [MoonBit](https://www.moonbitlang.com/) (zero hand-written JavaScript). Supports CSV, TSV, plain text, Markdown, and unified diff formats. Comments are output as YAML to stdout.
 
 ## Features
 
@@ -44,7 +78,7 @@ A lightweight browser-based tool for reviewing and annotating tabular data, text
 - Numbered badges for quick identification
 
 ### Media Embed Discipline (AI-friendly)
-- `reviw file.md` refuses to start (exit 1) when media files are written as `[text](path)` links instead of `![alt](path)` embeds
+- `dozo file.md` refuses to start (exit 1) when media files are written as `[text](path)` links instead of `![alt](path)` embeds
 - The error lists every violation with line numbers and ready-to-apply fixes, so AI agents can self-correct and retry
 
 ### Media Fullscreen
@@ -78,36 +112,42 @@ A lightweight browser-based tool for reviewing and annotating tabular data, text
 
 ## Installation
 
+You usually don't need one — see [Getting started](#getting-started-the-only-step). If you prefer a global command:
+
 ```bash
-npm install -g reviw
+npm install -g dozo
 ```
 
 Or run directly with npx:
 
 ```bash
-npx reviw <file>
+npx dozo <file>
 ```
 
 ## Usage
 
 ```bash
+# No arguments: print the skill document for AI agents
+dozo
+
 # Single file
-reviw <file> [--port 4989] [--encoding utf8|shift_jis|...]
+dozo <file> [--port 4989] [--encoding utf8|shift_jis|...]
 
 # Multiple files (each opens on consecutive ports)
-reviw file1.csv file2.md file3.tsv --port 4989
+dozo file1.csv file2.md file3.tsv --port 4989
 
 # Diff from stdin
-git diff HEAD | reviw
+git diff HEAD | dozo
 
 # Diff file
-reviw changes.diff
+dozo changes.diff
 ```
 
 ### Options
 - `--port <number>`: Specify starting port (default: 4989)
 - `--encoding <encoding>`: Force specific encoding (auto-detected by default)
 - `--no-open`: Prevent automatic browser opening
+- `--skill`: Print the skill document for AI agents
 - `--help, -h`: Show help message
 - `--version, -v`: Show version number
 
@@ -120,31 +160,31 @@ reviw changes.diff
 ## Screenshots
 
 ### Markdown View with Media Sidebar
-![Markdown View with Media Sidebar](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-media-sidebar.png)
+![Markdown View with Media Sidebar](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-media-sidebar.png)
 
 ### Preview-only Mode
-![Preview-only Mode](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-preview-only.png)
+![Preview-only Mode](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-preview-only.png)
 
 ### Heading Toggle
-![Heading Toggle](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-heading-toggle.png)
+![Heading Toggle](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-heading-toggle.png)
 
 ### Comment Dialog with Image Attachment
-![Comment Dialog](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-comment-dialog.png)
+![Comment Dialog](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-comment-dialog.png)
 
 ### Video Fullscreen with Timeline Thumbnails
-![Video Fullscreen](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-video-thumbnails.png)
+![Video Fullscreen](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-video-thumbnails.png)
 
 ### Mermaid Fullscreen with Minimap
-![Mermaid Fullscreen](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-mermaid-fullscreen.png)
+![Mermaid Fullscreen](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-mermaid-fullscreen.png)
 
 ### Submit Review Dialog with Image Attachment
-![Submit Review Dialog](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-submit-modal.png)
+![Submit Review Dialog](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-submit-modal.png)
 
 ### CSV View
-![CSV View](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-csv.png)
+![CSV View](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-csv.png)
 
 ### Diff View
-![Diff View](https://raw.githubusercontent.com/kazuph/reviw/main/assets/screenshot-diff.png)
+![Diff View](https://raw.githubusercontent.com/kazuph/dozo/main/assets/screenshot-diff.png)
 
 ## Output Example
 
@@ -163,14 +203,16 @@ summary: Overall the data looks good, minor issues noted above.
 
 ## Claude Code Plugin
 
-This repository also serves as a Claude Code plugin marketplace. The plugin integrates reviw into Claude Code workflows with task management and review automation.
+This repository also serves as a Claude Code plugin marketplace. The plugin integrates dozo into Claude Code workflows with task management and review automation.
+
+> Note: the plugin was renamed from `reviw-plugin` to `dozo-plugin` in v2.0.0. If you installed the old plugin, remove it and install `dozo-plugin@dozo-plugins`.
 
 ### Installation
 
 ```bash
 # In Claude Code
-/plugin marketplace add kazuph/reviw
-/plugin install reviw-plugin@reviw-plugins
+/plugin marketplace add kazuph/dozo
+/plugin install dozo-plugin@dozo-plugins
 ```
 
 ### Install Skills with `npx skills`
@@ -179,13 +221,13 @@ Use this route when you want the task skills in Codex, OpenCode, Cursor, or othe
 
 ```bash
 # Preview what will be installed
-npx skills add https://github.com/kazuph/reviw --list
+npx skills add https://github.com/kazuph/dozo --list
 
-# Install all reviw skills globally for Codex
-npx skills add https://github.com/kazuph/reviw -g -a codex -s '*' --copy -y
+# Install all dozo skills globally for Codex
+npx skills add https://github.com/kazuph/dozo -g -a codex -s '*' --copy -y
 
-# Install all reviw skills globally for Codex and OpenCode
-npx skills add https://github.com/kazuph/reviw -g -a codex -a opencode -s '*' --copy -y
+# Install all dozo skills globally for Codex and OpenCode
+npx skills add https://github.com/kazuph/dozo -g -a codex -a opencode -s '*' --copy -y
 ```
 
 `npx skills` distributes the skill directories under `plugin/skills/`. With `-a codex -g --copy`, the skills are copied into Codex's global skills directory at `~/.agents/skills/`. If `~/.agents/skills` is a symlink, the copied files land in the symlink target.
@@ -243,11 +285,11 @@ plugin/
 
 | Type | Name | Description |
 |------|------|-------------|
-| **Task Skill** | `/reviw:do` | Start a task - create worktree with git wt, plan, register todos |
-| **Task Skill** | `/reviw:done` | Complete checklist - run 7 review agents, collect evidence, start review |
-| **Task Skill** | `/reviw:tiny-do` | Start a smaller task with the lightweight workflow |
-| **Task Skill** | `/reviw:tiny-done` | Finish a smaller task with lightweight review |
-| **Task Skill** | `/reviw:bucho` | Orchestrate Claude Code and Codex in manager mode |
+| **Task Skill** | `/dozo:do` | Start a task - create worktree with git wt, plan, register todos |
+| **Task Skill** | `/dozo:done` | Complete checklist - run 7 review agents, collect evidence, start review |
+| **Task Skill** | `/dozo:tiny-do` | Start a smaller task with the lightweight workflow |
+| **Task Skill** | `/dozo:tiny-done` | Finish a smaller task with lightweight review |
+| **Task Skill** | `/dozo:bucho` | Orchestrate Claude Code and Codex in manager mode |
 | **Agent** | `report-builder` | Prepare reports and evidence for user review |
 | **Agent** | `review-code-quality` | Code quality: readability, DRY, type safety, error handling |
 | **Agent** | `review-security` | Security: XSS, injection, OWASP Top 10, secrets detection |
@@ -275,14 +317,14 @@ plugin/
 | `check-yourself` | Force real verification instead of assumptions or lightweight spot checks |
 | `commit-and-push` | Generate a commit message, create the commit, push it, and confirm a clean git state |
 | `do` | Start the full task workflow with worktree setup, planning, and review preparation |
-| `done` | Run the full completion workflow with evidence collection and reviw-based review |
+| `done` | Run the full completion workflow with evidence collection and dozo-based review |
 | `exit-notifier` | Report background task completion and captured stdout/stderr back into the current tmux / Herdr pane |
 | `open` | Open files, artifacts, and URLs with macOS `open` |
 | `tiny-do` | Start a smaller task with the lightweight workflow |
 | `tiny-done` | Finish a smaller task with the lightweight completion flow |
 | `validate-report` | Internal helper used by `done` to validate `REPORT.md` against artifact-proof reporting rules |
 
-#### `/reviw:do <task description>`
+#### `/dozo:do <task description>`
 
 Starts a new task with proper environment setup.
 
@@ -304,7 +346,7 @@ Starts a new task with proper environment setup.
 
 **Task resumption:** When a session starts or after context compaction, the skill checks for existing worktrees (via `git wt`) and resumes from `REPORT.md`.
 
-#### `/reviw:done`
+#### `/dozo:done`
 
 Validates completion criteria before allowing task completion.
 
@@ -314,12 +356,12 @@ Validates completion criteria before allowing task completion.
 - [ ] Verified with `webapp-testing` skill
 - [ ] Evidence collected in `.artifacts/<feature>/`
 - [ ] Report created with `artifact-proof` skill
-- [ ] Reviewed with reviw (foreground mode)
+- [ ] Reviewed with dozo (foreground mode)
 - [ ] User approval received
 
 **Prohibited:**
 - Saying "implementation complete" without verification
-- Committing/pushing before reviw review
+- Committing/pushing before dozo review
 - Reports without evidence
 
 ---
@@ -328,7 +370,7 @@ Validates completion criteria before allowing task completion.
 
 #### Review Agents (7 agents run in parallel)
 
-When `/reviw:done` is executed, 7 review agents run simultaneously and append their findings to `REPORT.md`:
+When `/dozo:done` is executed, 7 review agents run simultaneously and append their findings to `REPORT.md`:
 
 | Agent | Focus | Output Section |
 |-------|-------|----------------|
@@ -362,8 +404,8 @@ Specialized agent for preparing review materials (runs after review agents).
 - Organize implementation into a structured report
 - Calculate total review score (X/35)
 - Collect and arrange evidence (screenshots, videos)
-- Prepare `REPORT.md` for reviw review
-- Parse reviw feedback and register as todos
+- Prepare `REPORT.md` for dozo review
+- Parse dozo feedback and register as todos
 
 **Invocation:**
 ```
@@ -386,14 +428,14 @@ Manages evidence collection for visual regression and PR documentation.
 - Git LFS setup for video files
 - PR image URLs with commit hashes (persist after branch deletion)
 
-**reviw integration:**
+**dozo integration:**
 ```bash
-# Open report in reviw (foreground required)
-npx reviw .artifacts/<feature>/REPORT.md
+# Open report in dozo (foreground required)
+npx dozo .artifacts/<feature>/REPORT.md
 
 # With video preview
 open .artifacts/<feature>/videos/demo.webm
-npx reviw .artifacts/<feature>/REPORT.md
+npx dozo .artifacts/<feature>/REPORT.md
 ```
 
 #### `webapp-testing`
@@ -427,7 +469,7 @@ node -e "const { chromium } = require('playwright');
 
 Triggers when `git commit` or `git push` is detected.
 
-**Message:** Reminds to run `/reviw:done` and review with reviw before committing.
+**Message:** Reminds to run `/dozo:done` and review with dozo before committing.
 
 #### UserPromptSubmit
 
@@ -440,7 +482,7 @@ Injects completion checklist into every AI response context.
 ### Workflow
 
 ```
-/reviw:do <task description>
+/dozo:do <task description>
     ↓
 Create worktree + Plan + TodoWrite
     ↓
@@ -448,7 +490,7 @@ Implementation (via subagents)
     ↓
 Build & Verify (webapp-testing)
     ↓
-/reviw:done
+/dozo:done
     ↓
 ┌─────────────────────────────────────────────┐
 │  7 Review Agents (parallel execution)       │
@@ -466,7 +508,7 @@ report-builder (organize + score)
     ↓
 Collect evidence (artifact-proof)
     ↓
-npx reviw opens report (foreground)
+npx dozo opens report (foreground)
     ↓
 User comments → Submit & Exit
     ↓
@@ -483,7 +525,7 @@ Commit & PR (only after approval)
 |-------|---------|--------|
 | 1/3 | Implementation complete | Do not report yet |
 | 2/3 | Build, start, verification complete | Do not report yet |
-| 3/3 | Review with reviw → User approval | Now complete |
+| 3/3 | Review with dozo → User approval | Now complete |
 
 ### Design Philosophy
 
@@ -533,7 +575,7 @@ This approach gives you full control: ignore by default, commit only what matter
 
 ## Development
 
-reviw is written entirely in [MoonBit](https://www.moonbitlang.com/) and compiled to JavaScript.
+dozo is written entirely in [MoonBit](https://www.moonbitlang.com/) and compiled to JavaScript.
 
 ```bash
 # Build

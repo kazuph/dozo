@@ -4,7 +4,7 @@ description: Deep user requirements elicitation - interview before coding
 allowed-tools: AskUserQuestion, Read, Grep, Glob
 ---
 
-# /reviw-plugin:ask
+# /dozo-plugin:ask
 
 <command-name>ask</command-name>
 

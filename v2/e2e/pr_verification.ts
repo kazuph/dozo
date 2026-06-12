@@ -17,7 +17,7 @@ const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const ROOT = join(__dirname, "..", "..");
 const SERVER_JS = join(ROOT, "v2", "_build", "js", "release", "build", "server", "server.js");
 const FIXTURE_MD = join(ROOT, "examples", "preview-regression.md");
-const LOCK_DIR = join(tmpdir(), "reviw-pr-verification-locks");
+const LOCK_DIR = join(tmpdir(), "dozo-pr-verification-locks");
 const ARTIFACTS = join(ROOT, ".artifacts", "pr-verification");
 
 mkdirSync(LOCK_DIR, { recursive: true });
@@ -66,7 +66,7 @@ interface ServerHandle {
 async function startServer(testFile: string, preferredPort: number): Promise<ServerHandle> {
   const proc = spawn("node", [SERVER_JS, testFile, "--no-open", "--port", String(preferredPort)], {
     stdio: ["pipe", "pipe", "pipe"],
-    env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+    env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
   });
 
   let stdout = "";

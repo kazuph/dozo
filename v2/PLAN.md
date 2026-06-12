@@ -1,10 +1,10 @@
-# reviw v2 — MoonBit再設計プラン
+# dozo v2 — MoonBit再設計プラン
 
 ## 背景
 
 ### なぜ再設計するのか
 
-reviw は「ブラウザでファイルをレビューし、コメントをYAMLとして出力する」ツール。
+dozo は「ブラウザでファイルをレビューし、コメントをYAMLとして出力する」ツール。
 現行版は `cli.cjs` 1ファイル10,800行のNode.jsモノリスで、以下の問題がある:
 
 - **型安全性ゼロ**: 全てが生JS。テンプレートリテラルにHTML/CSS/JSが混在
@@ -81,7 +81,7 @@ v2/
 - [x] **ui.js配信**: サーバーからビルド済みui.jsを配信
 - [x] **コメントJSON→モデル**: `/exit` POSTのJSONをComment配列にデシリアライズ
 - [x] **EADDRINUSEポートリトライ**: TCP + ロックファイルの二重ガード（最大10回）
-- [x] **ロックファイル**: `~/.reviw/locks/{port}.lock`、SIGINT/Submit時に自動クリーンアップ
+- [x] **ロックファイル**: `~/.dozo/locks/{port}.lock`、SIGINT/Submit時に自動クリーンアップ
 - [x] **コメント永続化**: localStorage保存/復元
 - [x] **Markdownビューワー**: side-by-side（preview + source）、ソース行クリックでコメント
 - [x] **SSE ライブリロード**: ファイル変更監視→ブラウザ自動リロード
@@ -103,12 +103,12 @@ v2/
 
 - [ ] **ドラッグ選択**: 矩形選択、複数行選択
 - [ ] **画像添付**: コメントへの画像ペースト（base64→ファイル保存）
-- [ ] **コメント履歴**: `~/.reviw-history/` への保存と表示
+- [ ] **コメント履歴**: `~/.dozo-history/` への保存と表示
 - [ ] **エンコーディング検出**: chardet相当（Shift-JIS, EUC-JP対応）
 - [ ] **macOS タブ再利用**: AppleScript経由の既存タブ検出
 - [ ] **ビデオタイムライン**: FFmpeg連携（FFI経由のchild_process）
 - [ ] **同期スクロール**: Markdownのpreview←→source間のスクロール同期
-- [ ] **reviw.questions**: frontmatterのネストYAMLパース（`reviw.questions` 配列）
+- [ ] **dozo.questions**: frontmatterのネストYAMLパース（`dozo.questions` 配列）
 
 ### Phase 2: テスト強化
 
@@ -118,7 +118,7 @@ v2/
 
 ### Phase 3: 配布
 
-- [ ] **npm配布**: `moon build` → バンドル → `npx reviw` で実行可能に
+- [ ] **npm配布**: `moon build` → バンドル → `npx dozo` で実行可能に
 - [ ] **plugin更新**: v2対応のplugin（agents, skills, hooks）
 - [ ] **CLAUDE.md更新**: v2のビルド・テスト手順
 

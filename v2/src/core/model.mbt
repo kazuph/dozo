@@ -148,8 +148,8 @@ pub(all) struct DiffData {
   files : Array[DiffFile]
 } derive(Show)
 
-///| A reviw question from frontmatter
-pub(all) struct ReviwQuestion {
+///| A dozo question from frontmatter
+pub(all) struct DozoQuestion {
   id : String
   question : String
   resolved : Bool
@@ -162,5 +162,5 @@ pub(all) struct MarkdownData {
   source : String
   html : String
   frontmatter : Map[String, String]
-  questions : Array[ReviwQuestion]
+  questions : Array[DozoQuestion]
 } derive(Show)

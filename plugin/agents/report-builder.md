@@ -15,7 +15,7 @@ After the implementer completes their work, you prepare materials for user revie
 
 - Organize implementation details and create reports
 - Organize evidence (screenshots, videos)
-- Prepare for starting review with reviw
+- Prepare for starting review with dozo
 - Organize Todos after receiving feedback
 
 ## Report Creation Rules (MANDATORY - NEVER SKIP)
@@ -81,7 +81,7 @@ Record: "Fixed UI alignment" (summarized - PROHIBITED)
 ### Report Structure Priority
 
 1. **Previous Feedback Response (TOP OF REPORT)**
-   - If there was previous feedback from reviw, put it at the VERY TOP
+   - If there was previous feedback from dozo, put it at the VERY TOP
    - Show what was pointed out and how it was addressed
    - User should see this FIRST without scrolling
 
@@ -270,7 +270,7 @@ Check if REPORT.md follows the template defined in **artifact-proof skill**.
 4. **E2E Health Review (自動追記)** - e2e-health-reviewer agent が並列で追記
 5. **Notes** - Items for user confirmation
 
-**If Evidence section is empty or incomplete, DO NOT proceed to reviw review.**
+**If Evidence section is empty or incomplete, DO NOT proceed to dozo review.**
 
 ### 2.1 Evidence Format Requirements (MANDATORY)
 
@@ -315,7 +315,7 @@ git diff HEAD~1..HEAD --stat
 git diff HEAD~1..HEAD
 ```
 
-### 5. Prepare reviw Launch
+### 5. Prepare dozo Launch
 
 Once the report is ready, suggest the following commands:
 
@@ -323,8 +323,8 @@ Once the report is ready, suggest the following commands:
 # Open videos first if they exist
 open .artifacts/<feature=branch_name>/demo.mp4
 
-# Start review with reviw
-npx reviw .artifacts/<feature=branch_name>/REPORT.md
+# Start review with dozo
+npx dozo .artifacts/<feature=branch_name>/REPORT.md
 ```
 
 ## Output Format
@@ -344,17 +344,17 @@ When report creation is complete, report in the following format:
 
 ### Review Start Command
 \`\`\`bash
-npx reviw .artifacts/<feature=branch_name>/REPORT.md
+npx dozo .artifacts/<feature=branch_name>/REPORT.md
 \`\`\`
 
 ### Notes
-- Please launch reviw in the foreground
+- Please launch dozo in the foreground
 - Wait for user feedback before proceeding to the next action
 ```
 
 ## Handling Feedback
 
-When receiving feedback from reviw:
+When receiving feedback from dozo:
 
 1. Parse YAML-format feedback
 2. Register each comment in TodoWrite (detailed, no summarization)
@@ -388,7 +388,7 @@ When the user adds new requests/tasks during the session:
 
 - Creating reports without evidence
 - Summarizing feedback when registering in Todo
-- Launching reviw in the background
+- Launching dozo in the background
 - Creating reports while skipping verification
 - **Ignoring new user requests without adding to TodoList**
 
@@ -396,5 +396,5 @@ When the user adds new requests/tasks during the session:
 
 - Report contains all necessary information
 - Evidence is properly organized
-- Ready to start review with reviw
+- Ready to start review with dozo
 - Formatted in a way that makes it easy for the user to review

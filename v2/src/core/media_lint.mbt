@@ -1,5 +1,5 @@
 ///| Media embed discipline lint
-///  reviw renders media only when written with ![alt](path) image syntax.
+///  dozo renders media only when written with ![alt](path) image syntax.
 ///  A [text](path/to.png) link shows up as a plain link, so the reviewer
 ///  never sees the evidence. find_media_link_violations detects such links
 ///  so the CLI can refuse to start and ask the caller (usually an AI agent)
@@ -12,7 +12,7 @@ pub struct MediaLinkViolation {
   fixed : String    // suggested replacement: ![text](url)
 } derive(Show, Eq)
 
-///| Extensions reviw can render inline (images + videos)
+///| Extensions dozo can render inline (images + videos)
 let media_link_exts : Array[String] = [
   ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".bmp", ".avif",
   ".mp4", ".mov", ".webm", ".avi", ".mkv", ".m4v", ".ogv",

@@ -3,7 +3,7 @@ name: mobile-impl
 description: モバイルアプリ実装のマスターエージェント。UIフロー設計、実装、Maestro E2Eテスト、検証を一貫して行う。モック/ハードコード/バイパス禁止のゼロトレランスポリシーを適用。ネイティブアプリ開発、クロスプラットフォーム開発に使用。
 tools: Read, Write, Edit, MultiEdit, Glob, Grep, Bash, WebFetch, WebSearch, TodoWrite, Task
 model: opus
-skills: reviw-plugin:mobile-testing, reviw-plugin:artifact-proof
+skills: dozo-plugin:mobile-testing, dozo-plugin:artifact-proof
 context: fork
 ---
 

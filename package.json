@@ -1,19 +1,34 @@
 {
-  "name": "reviw",
-  "version": "1.6.1",
-  "description": "Lightweight file reviewer with in-browser comments for CSV, TSV, Markdown, and Git diffs.",
+  "name": "dozo",
+  "version": "2.0.0",
+  "description": "dozo 🍵 — Human-in-the-loop approval gate for AI coding workflows. The AI serves its report; you review and approve. (formerly reviw)",
   "type": "module",
   "bin": {
-    "reviw": "dist/server/server.js"
+    "dozo": "dist/server/server.js"
   },
   "files": [
     "dist/"
   ],
   "scripts": {
     "test": "npm run test:v2",
-    "test:v2": "cd v2 && moon test --target js && moon build --target js --release && node --experimental-strip-types e2e/smoke.ts && node --experimental-strip-types e2e/media_sidebar_regression.ts && node --experimental-strip-types e2e/preview_interaction_regression.ts && node --experimental-strip-types e2e/media_discipline.ts",
+    "test:v2": "cd v2 && moon test --target js && moon build --target js --release && node --experimental-strip-types e2e/smoke.ts && node --experimental-strip-types e2e/media_sidebar_regression.ts && node --experimental-strip-types e2e/preview_interaction_regression.ts && node --experimental-strip-types e2e/media_discipline.ts && node --experimental-strip-types e2e/instant_skill.ts",
     "build": "cd v2 && moon build --target js --release",
     "prepack": "npm run build && mkdir -p dist/server dist/ui && echo '#!/usr/bin/env node' > dist/server/server.js && cat v2/_build/js/release/build/server/server.js >> dist/server/server.js && chmod +x dist/server/server.js && cp v2/_build/js/release/build/ui/ui.js dist/ui/"
+  },
+  "keywords": [
+    "review",
+    "approval",
+    "human-in-the-loop",
+    "ai",
+    "agent",
+    "markdown",
+    "report",
+    "diff",
+    "dozo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazuph/dozo.git"
   },
   "license": "MIT",
   "author": "kazuph",

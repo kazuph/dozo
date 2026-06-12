@@ -1,13 +1,25 @@
 {
-  "name": "reviw-plugin",
-  "version": "1.8.4",
-  "description": "reviw CLI integration - task management skills, review workflow, and report generation agents. Supports web, backend, and mobile projects.",
+  "name": "dozo-plugin",
+  "version": "2.0.0",
+  "description": "dozo CLI integration - task management skills, review workflow, and report generation agents. Supports web, backend, and mobile projects.",
   "author": {
     "name": "kazuph",
     "url": "https://github.com/kazuph"
   },
-  "homepage": "https://github.com/kazuph/reviw",
-  "repository": "https://github.com/kazuph/reviw",
+  "homepage": "https://github.com/kazuph/dozo",
+  "repository": "https://github.com/kazuph/dozo",
   "license": "MIT",
-  "keywords": ["review", "csv", "markdown", "diff", "workflow", "task-management", "e2e-testing", "code-review", "backend-testing", "mobile-testing", "maestro"]
+  "keywords": [
+    "review",
+    "csv",
+    "markdown",
+    "diff",
+    "workflow",
+    "task-management",
+    "e2e-testing",
+    "code-review",
+    "backend-testing",
+    "mobile-testing",
+    "maestro"
+  ]
 }

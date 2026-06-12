@@ -1,6 +1,6 @@
 ---
 name: do
-description: Task Start - worktree creation, planning, and review preparation in reviw
+description: Task Start - worktree creation, planning, and review preparation in dozo
 argument-hint: <task description>
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, TodoWrite, Task, AskUserQuestion
 ---
@@ -11,7 +11,7 @@ Receive requests for tasks to be done, set up the work environment, and create a
 
 **Role: You are the Project Manager (PM) interviewing the Product Owner (user).**
 
-**ALL checkpoints must be passed before task completion. Do NOT split into separate PRs, report partial progress, or defer remaining checkpoints to "next time". This is a single continuous flow that ends with `/reviw-plugin:done`.**
+**ALL checkpoints must be passed before task completion. Do NOT split into separate PRs, report partial progress, or defer remaining checkpoints to "next time". This is a single continuous flow that ends with `/dozo-plugin:done`.**
 
 ## ☑ 1. Interactive Discovery (REQUIRED)
 
@@ -178,13 +178,13 @@ Launch applicable agents in parallel with the Agent tool:
 
 ```
 # Code & Security の観点で助言をもらう
-Agent(subagent_type="reviw-plugin:review-code-security", prompt="以下の設計案に助言してください：\n[設計案の要約]\n[変更ファイル一覧]\n[トレードオフ]")
+Agent(subagent_type="dozo-plugin:review-code-security", prompt="以下の設計案に助言してください：\n[設計案の要約]\n[変更ファイル一覧]\n[トレードオフ]")
 
 # E2E の観点で助言をもらう（テストに影響する変更の場合）
-Agent(subagent_type="reviw-plugin:review-e2e", prompt="以下の設計案にE2E観点で助言してください：\n[設計案の要約]")
+Agent(subagent_type="dozo-plugin:review-e2e", prompt="以下の設計案にE2E観点で助言してください：\n[設計案の要約]")
 
 # UI/UX の観点で助言をもらう（UI変更がある場合のみ）
-Agent(subagent_type="reviw-plugin:review-ui-ux", prompt="以下のUI設計案に助言してください：\n[設計案の要約]")
+Agent(subagent_type="dozo-plugin:review-ui-ux", prompt="以下のUI設計案に助言してください：\n[設計案の要約]")
 ```
 
 Incorporate Review Agent advisory feedback into the proposal.
@@ -361,13 +361,13 @@ Launch subagent with Task tool
 
 $ARGUMENTS = Request text for what to do, specification explanation, etc.
 
-## When Receiving Feedback from reviw (YAML format)
+## When Receiving Feedback from dozo (YAML format)
 
-When `/do` is called with YAML-formatted feedback from reviw (after user submits review), follow this flow:
+When `/do` is called with YAML-formatted feedback from dozo (after user submits review), follow this flow:
 
-### Detecting reviw Feedback
+### Detecting dozo Feedback
 
-If $ARGUMENTS contains YAML with `file:`, `mode:`, `comments:` fields, this is reviw feedback:
+If $ARGUMENTS contains YAML with `file:`, `mode:`, `comments:` fields, this is dozo feedback:
 
 ```yaml
 file: REPORT.md
@@ -403,7 +403,7 @@ comments:
    ```
 
 4. **Final verification**
-   - Run /reviw-plugin:done to open report in reviw for user review
+   - Run /dozo-plugin:done to open report in dozo for user review
    - Get explicit user approval before completing
 
 ### Example
@@ -703,7 +703,7 @@ Mermaid diagrams should only be used when visual representation adds value that 
 
 #### Common
 - [ ] Collect evidence with artifact-proof
-- [ ] Complete report with /done (review in reviw)
+- [ ] Complete report with /done (review in dozo)
 
 ### Completion Criteria
 
@@ -711,7 +711,7 @@ Mermaid diagrams should only be used when visual representation adds value that 
 - [ ] Build successful
 - [ ] Operation verified
 - [ ] Evidence (screenshots/videos) collected
-- [ ] Reviewed in reviw
+- [ ] Reviewed in dozo
 
 ## Test Results
 
@@ -766,7 +766,7 @@ The main thread should focus on the director role and proceed with the following
 │     ├─ Independent tasks → Launch subagents in parallel         │
 │     └─ Dependent tasks → Launch after previous completion       │
 │  3. Integrate results from each subagent                        │
-│  4. Proceed to /reviw-plugin:done                               │
+│  4. Proceed to /dozo-plugin:done                               │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -775,18 +775,18 @@ The main thread should focus on the director role and proceed with the following
 
 ```
 # Launch 3 independent component implementations in parallel
-Task(subagent_type="reviw-plugin:webapp-impl", prompt="Implement HeaderComponent...")
-Task(subagent_type="reviw-plugin:webapp-impl", prompt="Implement SidebarComponent...")
-Task(subagent_type="reviw-plugin:webapp-impl", prompt="Implement FooterComponent...")
+Task(subagent_type="dozo-plugin:webapp-impl", prompt="Implement HeaderComponent...")
+Task(subagent_type="dozo-plugin:webapp-impl", prompt="Implement SidebarComponent...")
+Task(subagent_type="dozo-plugin:webapp-impl", prompt="Implement FooterComponent...")
 ```
 
 **Subagent Selection Criteria:**
 
 | Task Type | subagent_type | Project Types | Notes |
 |-----------|---------------|---------------|------|
-| Web UI Implementation | `reviw-plugin:webapp-impl` | web, fullstack | General frontend with zero-tolerance policy |
-| Backend Implementation | `reviw-plugin:backend-impl` | backend, fullstack | API/service implementation |
-| Mobile Implementation | `reviw-plugin:mobile-impl` | mobile | Mobile app implementation |
+| Web UI Implementation | `dozo-plugin:webapp-impl` | web, fullstack | General frontend with zero-tolerance policy |
+| Backend Implementation | `dozo-plugin:backend-impl` | backend, fullstack | API/service implementation |
+| Mobile Implementation | `dozo-plugin:mobile-impl` | mobile | Mobile app implementation |
 | Expo/RN Implementation | `expo-app-maker` | mobile | Expo/React Native specific |
 | Code Investigation | `Explore` | ALL | Understanding existing code |
 | Design Review | `Plan` | ALL | Architecture review |
@@ -812,28 +812,28 @@ Task(subagent_type="reviw-plugin:webapp-impl", prompt="Implement FooterComponent
 |  Completion criteria:                                         |
 |    1/3: Implementation complete                               |
 |    2/3: Build, start, and operation verification complete     |
-|    3/3: Review in reviw → User approval                       |
+|    3/3: Review in dozo → User approval                       |
 |                                                               |
 |  Tools to use:                                                |
-|    - reviw: Browser-based review tool                         |
+|    - dozo: Browser-based review tool                         |
 |    - webapp-testing: Browser operation and verification       |
 |    - artifact-proof: Evidence collection                      |
 |                                                               |
 +---------------------------------------------------------------+
 ```
 
-## ☑ 5. Execute /reviw-plugin:done (MANDATORY)
+## ☑ 5. Execute /dozo-plugin:done (MANDATORY)
 
-**After implementation is complete, you MUST execute `/reviw-plugin:done` to proceed to the review flow.**
+**After implementation is complete, you MUST execute `/dozo-plugin:done` to proceed to the review flow.**
 
 This is NOT optional. Implementation without review is incomplete.
 
 ```
 Implementation done
   ↓
-Execute /reviw-plugin:done
+Execute /dozo-plugin:done
   ↓
-done handles: build → verification → review agents → report → reviw
+done handles: build → verification → review agents → report → dozo
   ↓
 User approval
   ↓
@@ -974,4 +974,4 @@ This will:
 2. Write the plan to `.worktree/feature-add-login-button/.artifacts/add-login-button/REPORT.md`
 3. Register TODOs in TodoWrite
 4. Display deliverable-focused action guidelines
-5. After implementation, execute `/reviw-plugin:done` for review
+5. After implementation, execute `/dozo-plugin:done` for review

@@ -74,7 +74,7 @@ await new Promise((r) => setTimeout(r, 1200));
 
 // tab title
 const title = await page.title();
-check(/reviw\/test-features\.md \| reviw/.test(title), `tab title is project/file ("${title}")`);
+check(/dozo\/test-features\.md \| dozo/.test(title), `tab title is project/file ("${title}")`);
 
 // default preview-only
 const previewOnly = await page.evaluate(() => document.querySelector(".md-layout")!.classList.contains("preview-only"));

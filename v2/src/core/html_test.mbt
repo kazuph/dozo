@@ -28,7 +28,7 @@ test "build csv html contains table" {
   inspect(html.contains("Alice"), content=(
     #|true
   ))
-  inspect(html.contains("test.csv | reviw"), content=(
+  inspect(html.contains("test.csv | dozo"), content=(
     #|true
   ))
 }

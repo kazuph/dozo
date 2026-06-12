@@ -3,7 +3,7 @@ name: backend-impl
 description: バックエンドAPI実装のマスターエージェント。テストファースト開発、実装、検証を一貫して行う。curl/モック/ハードコード/バイパス禁止のゼロトレランスポリシーを適用。API開発、DB設計、バグ修正に使用。
 tools: Read, Write, Edit, MultiEdit, Glob, Grep, Bash, WebFetch, WebSearch, TodoWrite, Task
 model: opus
-skills: reviw-plugin:backend-testing, reviw-plugin:artifact-proof
+skills: dozo-plugin:backend-testing, dozo-plugin:artifact-proof
 context: fork
 ---
 

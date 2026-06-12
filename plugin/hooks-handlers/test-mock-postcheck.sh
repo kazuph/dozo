@@ -43,7 +43,7 @@ if grep -qE "$MOCK_PATTERNS" "$FILE_PATH" 2>/dev/null; then
 {
   "hookSpecificOutput": {
     "hookEventName": "PostToolUse",
-    "additionalContext": "[reviw-plugin] テストファイル ${BASENAME} にモックパターンを検出: ${DETECTED}\n\n該当箇所: ${LINE_EXAMPLES}\n\nこのテストはレビューで却下されます。モック/スタブを削除し、実サーバー + Playwright に書き直してください。"
+    "additionalContext": "[dozo-plugin] テストファイル ${BASENAME} にモックパターンを検出: ${DETECTED}\n\n該当箇所: ${LINE_EXAMPLES}\n\nこのテストはレビューで却下されます。モック/スタブを削除し、実サーバー + Playwright に書き直してください。"
   }
 }
 EOF

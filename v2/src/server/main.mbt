@@ -33,10 +33,10 @@ let live_log_path : Ref[String] = Ref::new("")
 ///| Initialize live log file
 fn init_live_log() -> Unit {
   let pid = process_pid()
-  let path = path_join(os_tmpdir(), "reviw-live-\{pid}.jsonl")
+  let path = path_join(os_tmpdir(), "dozo-live-\{pid}.jsonl")
   live_log_path.val = path
   write_file_secure(path, "")
-  console_error("[REVIW_LIVE] \{path}")
+  console_error("[DOZO_LIVE] \{path}")
 }
 
 ///| Append a JSONL line to the live log
@@ -75,11 +75,11 @@ fn load_ui_js() -> String {
 
 ///| Get lock file directory
 fn lock_dir() -> String {
-  let override_dir = get_env_var("REVIW_LOCK_DIR")
+  let override_dir = get_env_var("DOZO_LOCK_DIR")
   if override_dir.length() > 0 {
     override_dir
   } else {
-    path_join(os_homedir(), ".reviw/locks")
+    path_join(os_homedir(), ".dozo/locks")
   }
 }
 
@@ -169,9 +169,12 @@ fn main {
     if arg == "--help" || arg == "-h" {
       print_usage()
       process_exit(0)
+    } else if arg == "--skill" {
+      print_skill_doc()
+      process_exit(0)
     } else if arg == "--version" || arg == "-v" {
       let ver = get_package_version()
-      console_log("reviw " + ver + " (moonbit)")
+      console_log("dozo " + ver + " (moonbit)")
       process_exit(0)
     } else if arg == "--port" {
       i = i + 1
@@ -195,6 +198,13 @@ fn main {
     }
     i = i + 1
   }
+  // Interactive terminal with no files: the reader is almost always an
+  // AI agent told "run npx dozo". Serve the skill document before any
+  // server setup so stdout is the pure markdown skill text.
+  if files.is_empty() && is_stdin_tty() {
+    print_skill_doc()
+    process_exit(0)
+  }
   // Initialize live log for real-time comment IPC
   init_live_log()
   // Cleanup locks and live log on SIGINT
@@ -210,15 +220,14 @@ fn main {
   )
   // Pre-load ui.js
   ignore(load_ui_js())
-  // Check stdin if no files
+  // No files and stdin is piped: read a diff from stdin
   if files.is_empty() {
-    if !(is_stdin_tty()) {
-      let stdin_content = read_stdin_sync()
-      if stdin_content.length() > 0 {
-        start_stdin_server(stdin_content, port, no_open)
-        return
-      }
+    let stdin_content = read_stdin_sync()
+    if stdin_content.length() > 0 {
+      start_stdin_server(stdin_content, port, no_open)
+      return
     }
+    // Piped but empty: a confused script — show usage and fail
     print_usage()
     process_exit(1)
   }
@@ -246,7 +255,7 @@ fn enforce_media_discipline(files : Array[String]) -> Unit {
     let violations = @core.find_media_link_violations(content)
     if violations.is_empty() { continue }
     if violation_total == 0 {
-      console_error("reviw: media embed discipline violation")
+      console_error("dozo: media embed discipline violation")
     }
     console_error("")
     console_error(resolved)
@@ -262,9 +271,9 @@ fn enforce_media_discipline(files : Array[String]) -> Unit {
       "Images and videos must be EMBEDDED with ![alt](path) image syntax, not referenced as [text](path) links.",
     )
     console_error(
-      "reviw renders only embedded media; a plain link hides the evidence from the reviewer.",
+      "dozo renders only embedded media; a plain link hides the evidence from the reviewer.",
     )
-    console_error("Fix the lines above, then run reviw again.")
+    console_error("Fix the lines above, then run dozo again.")
     process_exit(1)
   }
 }
@@ -272,19 +281,132 @@ fn enforce_media_discipline(files : Array[String]) -> Unit {
 ///|
 fn print_usage() -> Unit {
   let usage =
-    #|Usage: reviw <file...> [options]
+    #|Usage: dozo <file...> [options]
     #|
     #|Options:
     #|  --port <n>        Base port (default: 4989)
     #|  --host <addr>     Bind address (default: 127.0.0.1, use 0.0.0.0 for remote)
     #|  --no-open         Don't open browser
     #|  -e, --encoding <enc>  Force encoding (e.g. shift-jis, euc-jp)
+    #|  --skill           Print the skill document for AI agents
     #|  -h, --help        Show help
     #|  -v, --version     Show version
     #|
     #|Supported formats: CSV, TSV, Markdown, Diff, Plain text
-    #|Pipe stdin for diff: git diff | reviw
+    #|Pipe stdin for diff: git diff | dozo
+    #|Run with no arguments to print the AI agent skill document.
   console_log(usage)
+}
+
+///| The instant skill: everything an AI agent needs to serve work for
+///| human approval. Printed when dozo runs with no arguments on a TTY,
+///| so "just tell your AI to run npx dozo" is the entire onboarding.
+fn print_skill_doc() -> Unit {
+  let doc =
+    #|# dozo 🍵 — skill document for AI agents
+    #|
+    #|You are reading this because you ran `dozo` with no arguments.
+    #|dozo (どうぞ, "here you go") is how you serve finished work to your
+    #|human for approval — like setting a cup of tea in front of a guest.
+    #|Read this once and you know the whole protocol. At the end, offer to
+    #|install it permanently.
+    #|
+    #|## The idea
+    #|
+    #|Humans do not review diffs line by line anymore. They review the work:
+    #|intent, changes, and proof. You write a report; dozo opens it in the
+    #|human's browser; the human reads, comments, and decides; dozo prints
+    #|the verdict to stdout as YAML and exits. You read the verdict and act.
+    #|Never show raw code diffs when a report would do.
+    #|
+    #|## The approval loop (follow exactly)
+    #|
+    #|1. Finish the work: implement, test, and collect evidence
+    #|   (screenshots, test output, logs, screen recordings).
+    #|2. Write REPORT.md (rules below).
+    #|3. Serve it in the FOREGROUND and wait — this command blocks until
+    #|   the human submits their review, then exits:
+    #|
+    #|   ```bash
+    #|   npx dozo REPORT.md
+    #|   ```
+    #|
+    #|4. Parse the YAML printed to stdout on exit (schema below).
+    #|5. If `decision: request_changes` — fix every point raised in
+    #|   `summary` and `comments`, update REPORT.md, and serve it again.
+    #|   Repeat until `decision: approve`.
+    #|6. Only after approve: commit, push, publish, or report completion.
+    #|
+    #|## REPORT.md rules
+    #|
+    #|- Open with the original request: 1-3 lines stating what the human
+    #|  asked for. A report that doesn't say what it answers is worthless.
+    #|- Structure as WHY (problem/motivation) → HOW (approach, alternatives
+    #|  considered) → WHAT (files, functions, concrete changes).
+    #|- EMBED all evidence: images and videos must use `![alt](path)`.
+    #|  A bare `[text](path)` link to media makes dozo refuse to start
+    #|  (exit 1) and print the lines to fix — fix them and rerun.
+    #|- Mermaid code blocks render as interactive diagrams. Raw inline
+    #|  HTML/SVG does NOT render — save diagrams as .svg files and embed
+    #|  them as images.
+    #|- Put any question for the human right next to the facts needed to
+    #|  answer it, so they can decide without reading the whole document.
+    #|
+    #|## Verdict schema (stdout YAML, printed when the human submits)
+    #|
+    #|```yaml
+    #|action: final_approve | final_request_changes
+    #|file: REPORT.md
+    #|mode: markdown
+    #|comments:           # may be empty
+    #|  - row: 12         # line/row the comment is anchored to
+    #|    col: 0
+    #|    text: the human's comment
+    #|    value: the line content it refers to
+    #|summary: overall feedback from the human
+    #|decision: approve | request_changes
+    #|```
+    #|
+    #|Treat `decision` as the single source of truth. The process exits 0
+    #|after submission; an early nonzero exit means dozo refused to start
+    #|(read stderr, fix, retry).
+    #|
+    #|## CLI reference
+    #|
+    #|```bash
+    #|dozo <file...> [--port n] [--host addr] [--no-open] [-e encoding]
+    #|git diff | dozo      # review a diff from stdin
+    #|dozo --skill         # print this document again
+    #|```
+    #|
+    #|Formats: Markdown, CSV, TSV, unified diff, plain text.
+    #|Multiple files open on consecutive ports and are reviewed together.
+    #|
+    #|## Install this skill permanently (do this now)
+    #|
+    #|Ask your human ONE yes/no question using your question mechanism
+    #|(e.g. AskUserQuestion): "Install dozo as a permanent skill, so I
+    #|always serve my work for your approval this way? 🍵"
+    #|
+    #|If yes, write this entire document (everything you just read) to the
+    #|location your runtime loads skills from, prepending this frontmatter:
+    #|
+    #|```markdown
+    #|---
+    #|name: dozo
+    #|description: Serve finished work to the human as a browsable report
+    #|  for review and approval. Use whenever a task is complete and needs
+    #|  human sign-off before commit/publish/completion.
+    #|---
+    #|```
+    #|
+    #|- Claude Code:  ~/.claude/skills/dozo/SKILL.md
+    #|- Codex/agents: ~/.agents/skills/dozo/SKILL.md
+    #|- Project-local alternative: .claude/skills/dozo/SKILL.md
+    #|
+    #|From then on, serve every finished task with `npx dozo REPORT.md`
+    #|without being asked. The tea serves itself. 🍵
+  console_log(doc)
 }
 
 ///|
@@ -540,7 +662,7 @@ let history_max : Int = 50
 
 ///| Get history directory path
 fn history_dir() -> String {
-  path_join(os_homedir(), ".reviw/history")
+  path_join(os_homedir(), ".dozo/history")
 }
 
 ///| Ensure history directory exists
@@ -669,7 +791,7 @@ fn try_listen(ctx : ServerContext, port : Int, attempt : Int, no_open : Bool) ->
       write_lock(port)
       let display_host = if host == "0.0.0.0" { "127.0.0.1" } else { host }
       let url = "http://\{display_host}:\{port}"
-      console_log("reviw serving \{ctx.filename} at \{url}")
+      console_log("dozo serving \{ctx.filename} at \{url}")
       if !(no_open) {
         open_browser(url)
       }
@@ -1022,7 +1144,7 @@ fn handle_submit(ctx : ServerContext, body : String) -> Unit {
       })
     }
   }
-  let answers = json_parse_string("reviwAnswers", body)
+  let answers = json_parse_string("dozoAnswers", body)
   let raw_merr = json_parse_mermaid_errors(body)
   let mermaid_errors : Array[@core.MermaidError] = []
   for me in raw_merr {
@@ -1061,7 +1183,7 @@ fn handle_submit(ctx : ServerContext, body : String) -> Unit {
   }
   // Save summary images
   let images = json_parse_images(body)
-  let output_dir = path_join(os_homedir(), ".reviw/outputs")
+  let output_dir = path_join(os_homedir(), ".dozo/outputs")
   for i, img in images {
     if img.length() > 0 {
       ignore(base64_to_file(img, output_dir, i))

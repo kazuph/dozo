@@ -154,8 +154,8 @@ test "parse markdown empty" {
   inspect(md.questions.length(), content="0")
 }
 
-test "parse markdown with reviw questions" {
-  let input = "---\ntitle: Test\nreviw:\n  questions:\n    - id: q1\n      question: What do you think?\n      resolved: false\n    - id: q2\n      question: Is this OK?\n      resolved: true\n      answer: Yes\n---\n\n# Content"
+test "parse markdown with dozo questions" {
+  let input = "---\ntitle: Test\ndozo:\n  questions:\n    - id: q1\n      question: What do you think?\n      resolved: false\n    - id: q2\n      question: Is this OK?\n      resolved: true\n      answer: Yes\n---\n\n# Content"
   let md = parse_markdown(input)
   inspect(md.questions.length(), content="2")
   inspect(md.questions[0].id, content="q1")
@@ -167,7 +167,7 @@ test "parse markdown with reviw questions" {
 }
 
 test "parse markdown questions with options" {
-  let input = "---\nreviw:\n  questions:\n    - id: rating\n      question: How would you rate?\n      options:\n        - Good\n        - Bad\n        - Neutral\n---\n\nText"
+  let input = "---\ndozo:\n  questions:\n    - id: rating\n      question: How would you rate?\n      options:\n        - Good\n        - Bad\n        - Neutral\n---\n\nText"
   let md = parse_markdown(input)
   inspect(md.questions.length(), content="1")
   inspect(md.questions[0].options.length(), content="3")

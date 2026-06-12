@@ -5,7 +5,7 @@ argument-hint: <url or feature description>
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Agent, AskUserQuestion
 ---
 
-# /reviw-plugin:dogfooding
+# /dozo-plugin:dogfooding
 
 <command-name>dogfooding</command-name>
 
@@ -114,7 +114,7 @@ Agent({
   description: "遅延原因の調査",
   run_in_background: true,
   prompt: `
-    reviwのダッシュボード画面でレスポンスが遅い（体感2秒以上）。
+    dozoのダッシュボード画面でレスポンスが遅い（体感2秒以上）。
     以下を調査して原因と修正案を報告:
     1. ダッシュボードのデータ取得ロジックを特定（Grep "dashboard"）
     2. N+1クエリ、不要なfetch、キャッシュ漏れがないか確認

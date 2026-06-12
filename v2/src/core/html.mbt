@@ -108,7 +108,7 @@ fn build_page_start(
   buf.write_string("<meta http-equiv=\"Expires\" content=\"0\">")
   buf.write_string("<title>")
   buf.write_string(escape_html(if tab_title.length() > 0 { tab_title } else { filename }))
-  buf.write_string(" | reviw</title>")
+  buf.write_string(" | dozo</title>")
   // highlight.js CDN stylesheets (dark/light theme support)
   buf.write_string("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github-dark.min.css\" id=\"hljs-theme-dark\" disabled>")
   buf.write_string("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/github.min.css\" id=\"hljs-theme-light\">")
@@ -232,16 +232,16 @@ fn build_recovery_modal(buf : StringBuilder) -> Unit {
 }
 
 ///| Build questions modal HTML (cli.cjs compatible overlay structure)
-fn build_questions_modal(buf : StringBuilder, questions : Array[ReviwQuestion]) -> Unit {
+fn build_questions_modal(buf : StringBuilder, questions : Array[DozoQuestion]) -> Unit {
   if questions.length() == 0 {
     return
   }
   // Overlay
-  buf.write_string("<div class=\"reviw-questions-overlay\" id=\"reviw-questions-overlay\">")
-  buf.write_string("<div class=\"reviw-questions-modal\" id=\"reviw-questions-modal\">")
-  buf.write_string("<div class=\"reviw-questions-header\"><h2>\u{1F4CB} AI\u{304B}\u{3089}\u{306E}\u{8CEA}\u{554F} <span id=\"reviw-questions-count\"></span></h2>")
-  buf.write_string("<button class=\"btn\" id=\"reviw-questions-close\">\u{2715}</button></div>")
-  buf.write_string("<div class=\"reviw-questions-body\" id=\"reviw-questions-body\">")
+  buf.write_string("<div class=\"dozo-questions-overlay\" id=\"dozo-questions-overlay\">")
+  buf.write_string("<div class=\"dozo-questions-modal\" id=\"dozo-questions-modal\">")
+  buf.write_string("<div class=\"dozo-questions-header\"><h2>\u{1F4CB} AI\u{304B}\u{3089}\u{306E}\u{8CEA}\u{554F} <span id=\"dozo-questions-count\"></span></h2>")
+  buf.write_string("<button class=\"btn\" id=\"dozo-questions-close\">\u{2715}</button></div>")
+  buf.write_string("<div class=\"dozo-questions-body\" id=\"dozo-questions-body\">")
   // Unresolved questions
   let mut unresolved_count = 0
   for q in questions {
@@ -289,10 +289,10 @@ fn build_questions_modal(buf : StringBuilder, questions : Array[ReviwQuestion]) 
   // Resolved questions (collapsible)
   let resolved_count = questions.length() - unresolved_count
   if resolved_count > 0 {
-    buf.write_string("<div class=\"reviw-resolved-section\">")
-    buf.write_string("<button class=\"reviw-resolved-toggle\">\u{2705} \u{89E3}\u{6C7A}\u{6E08}\u{307F} (")
+    buf.write_string("<div class=\"dozo-resolved-section\">")
+    buf.write_string("<button class=\"dozo-resolved-toggle\">\u{2705} \u{89E3}\u{6C7A}\u{6E08}\u{307F} (")
     buf.write_string(resolved_count.to_string())
-    buf.write_string(")</button><div class=\"reviw-resolved-list\">")
+    buf.write_string(")</button><div class=\"dozo-resolved-list\">")
     for i, q in questions {
       if !(q.resolved) {
         continue
@@ -312,20 +312,20 @@ fn build_questions_modal(buf : StringBuilder, questions : Array[ReviwQuestion]) 
     buf.write_string("</div></div>")
   }
   buf.write_string("</div>")
-  buf.write_string("<div class=\"reviw-questions-footer\">")
-  buf.write_string("<button class=\"btn\" id=\"reviw-questions-later\">\u{5F8C}\u{3067}\u{56DE}\u{7B54}\u{3059}\u{308B}</button>")
+  buf.write_string("<div class=\"dozo-questions-footer\">")
+  buf.write_string("<button class=\"btn\" id=\"dozo-questions-later\">\u{5F8C}\u{3067}\u{56DE}\u{7B54}\u{3059}\u{308B}</button>")
   buf.write_string("</div></div></div>")
   // Questions bar (shown after closing modal with unanswered questions)
-  buf.write_string("<div class=\"reviw-questions-bar\" id=\"reviw-questions-bar\">")
-  buf.write_string("<span id=\"reviw-questions-bar-message\">\u{1F5C2}\u{FE0F} \u{672A}\u{56DE}\u{7B54}\u{306E}\u{8CEA}\u{554F}\u{304C}<span id=\"reviw-questions-bar-count\">")
+  buf.write_string("<div class=\"dozo-questions-bar\" id=\"dozo-questions-bar\">")
+  buf.write_string("<span id=\"dozo-questions-bar-message\">\u{1F5C2}\u{FE0F} \u{672A}\u{56DE}\u{7B54}\u{306E}\u{8CEA}\u{554F}\u{304C}<span id=\"dozo-questions-bar-count\">")
   buf.write_string(unresolved_count.to_string())
   buf.write_string("</span>\u{4EF6}\u{3042}\u{308A}\u{307E}\u{3059}</span>")
-  buf.write_string("<button class=\"btn\" id=\"reviw-questions-bar-open\">\u{8CEA}\u{554F}\u{3092}\u{898B}\u{308B}</button>")
+  buf.write_string("<button class=\"btn\" id=\"dozo-questions-bar-open\">\u{8CEA}\u{554F}\u{3092}\u{898B}\u{308B}</button>")
   buf.write_string("</div>")
 }
 
 ///| Build questions notice bar (legacy, now integrated into questions modal)
-fn build_questions_notice(buf : StringBuilder, questions : Array[ReviwQuestion]) -> Unit {
+fn build_questions_notice(buf : StringBuilder, questions : Array[DozoQuestion]) -> Unit {
   if questions.length() == 0 {
     return
   }
@@ -342,7 +342,7 @@ fn build_questions_notice(buf : StringBuilder, questions : Array[ReviwQuestion])
 }
 
 ///| Serialize questions array to JSON
-fn serialize_questions_json(questions : Array[ReviwQuestion]) -> String {
+fn serialize_questions_json(questions : Array[DozoQuestion]) -> String {
   let buf = StringBuilder::new()
   buf.write_char('[')
   for i, q in questions {
@@ -402,7 +402,7 @@ fn build_script_footer(
     buf.write_string("var src=d.getAttribute('data-source')||'';")
     buf.write_string("var msg='Mermaid render failed';")
     buf.write_string("try{await mermaid.parse(src);}catch(e){msg=e.message||String(e);}")
-    buf.write_string("console.error('[reviw] Mermaid error at line '+line+':',msg);")
+    buf.write_string("console.error('[dozo] Mermaid error at line '+line+':',msg);")
     buf.write_string("window.__mermaidErrors.push({line:line,message:msg,source:src});")
     buf.write_string("var container=d.closest('.mermaid-container');")
     buf.write_string("if(container&&!container.querySelector('.mermaid-error-banner')){")
@@ -415,13 +415,13 @@ fn build_script_footer(
     buf.write_string("}")
     buf.write_string("};")
     buf.write_string("mermaid.initialize({startOnLoad:false,logLevel:0,theme:document.documentElement.getAttribute('data-theme')==='light'?'default':'dark',securityLevel:'loose'});")
-    buf.write_string("mermaid.run().then(function(){return window.__collectMermaidErrors();}).catch(function(e){console.error('[reviw] Mermaid render error:',e);return window.__collectMermaidErrors();});")
+    buf.write_string("mermaid.run().then(function(){return window.__collectMermaidErrors();}).catch(function(e){console.error('[dozo] Mermaid render error:',e);return window.__collectMermaidErrors();});")
     buf.write_string("window.__reRenderMermaid=function(theme){")
     buf.write_string("document.querySelectorAll('.mermaid-error-banner').forEach(function(b){b.remove();});")
     buf.write_string("mermaid.initialize({startOnLoad:false,logLevel:0,theme:theme!=='light'?'dark':'default',securityLevel:'loose'});")
     buf.write_string("var divs=document.querySelectorAll('.mermaid');")
     buf.write_string("divs.forEach(function(d){d.removeAttribute('data-processed');d.innerHTML=d.getAttribute('data-source');});")
-    buf.write_string("if(divs.length>0)mermaid.run({nodes:Array.from(divs)}).then(function(){return window.__collectMermaidErrors();}).catch(function(e){console.error('[reviw] Mermaid render error:',e);return window.__collectMermaidErrors();});")
+    buf.write_string("if(divs.length>0)mermaid.run({nodes:Array.from(divs)}).then(function(){return window.__collectMermaidErrors();}).catch(function(e){console.error('[dozo] Mermaid render error:',e);return window.__collectMermaidErrors();});")
     buf.write_string("};")
     // Mermaid fullscreen is handled by ui.js (ZoomPanViewer-based)
     buf.write_string("</script>")
@@ -439,11 +439,11 @@ fn build_script_footer(
     buf.write_string("</script>")
   }
   buf.write_string("<script type=\"module\" src=\"/ui.js\"></script>")
-  buf.write_string("<script>window.__REVIW_PORT__=")
+  buf.write_string("<script>window.__DOZO_PORT__=")
   buf.write_string(port.to_string())
-  buf.write_string(";window.__REVIW_MODE__=\"")
+  buf.write_string(";window.__DOZO_MODE__=\"")
   buf.write_string(escape_js_string(mode))
-  buf.write_string("\";window.__REVIW_FILENAME__=\"")
+  buf.write_string("\";window.__DOZO_FILENAME__=\"")
   buf.write_string(escape_js_string(filename))
   buf.write_string("\";</script></body></html>")
 }

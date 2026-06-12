@@ -1,7 +1,7 @@
 /**
  * Media Embed Discipline E2E Test
  *
- * reviw must refuse to start (exit 1, fix-it message) when a markdown file
+ * dozo must refuse to start (exit 1, fix-it message) when a markdown file
  * references media with [text](path) link syntax instead of ![alt](path)
  * embeds, so the calling AI agent can auto-fix the markdown.
  *
@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 const SERVER_JS = join(__dirname, "..", "_build", "js", "release", "build", "server", "server.js");
-const WORK_DIR = mkdtempSync(join(tmpdir(), "reviw-media-discipline-"));
+const WORK_DIR = mkdtempSync(join(tmpdir(), "dozo-media-discipline-"));
 const LOCK_DIR = join(WORK_DIR, "locks");
 
 let passed = 0;
@@ -38,11 +38,11 @@ interface RunResult {
   stderr: string;
 }
 
-function runReviw(file: string, port: number, killAfterMs: number): Promise<RunResult> {
+function runDozo(file: string, port: number, killAfterMs: number): Promise<RunResult> {
   return new Promise((resolve) => {
     const proc = spawn("node", [SERVER_JS, file, "--no-open", "--port", String(port)], {
       stdio: ["ignore", "pipe", "pipe"],
-      env: { ...process.env, REVIW_LOCK_DIR: LOCK_DIR },
+      env: { ...process.env, DOZO_LOCK_DIR: LOCK_DIR },
     });
     let stdout = "";
     let stderr = "";
@@ -75,7 +75,7 @@ try {
     "inline `[in code](skip2.mp4)` is fine",
   ].join("\n"));
 
-  const bad = await runReviw(badMd, 5371, 10000);
+  const bad = await runDozo(badMd, 5371, 10000);
   assert(bad.code === 1, "違反markdownで exit code 1 になる", bad);
   const combined = bad.stdout + bad.stderr;
   assert(
@@ -116,11 +116,11 @@ try {
     "[docs](https://example.com/page)",
   ].join("\n"));
 
-  const good = await runReviw(goodMd, 5372, 4000);
+  const good = await runDozo(goodMd, 5372, 4000);
   // Killed by our timeout (= server stayed up), so exit code is not 1
   assert(good.code !== 1, "規律準拠のmarkdownは正常にサーバー起動する", good);
   assert(
-    (good.stdout + good.stderr).includes("reviw serving"),
+    (good.stdout + good.stderr).includes("dozo serving"),
     "serving メッセージが出る",
     { stdout: good.stdout, stderr: good.stderr },
   );

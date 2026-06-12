@@ -161,7 +161,7 @@ MAESTRO_TEST=$(printf '%s' "$RECENT" | "$JQ" -r '
 # テスト実行もwebapp-testingも使われていない場合
 if [ "${TEST_RUN:-0}" -eq 0 ] && [ "${SKILL_TEST:-0}" -eq 0 ] && [ "${MAESTRO_TEST:-0}" -eq 0 ]; then
   cat >&2 <<BLOCK
-[reviw-plugin] テスト未実行での完了宣言を検出しました。
+[dozo-plugin] テスト未実行での完了宣言を検出しました。
 
 【トリガー】"${COMPLETION_TRIGGER}" という完了宣言がありました
 【変更ファイル】${CODE_CHANGED}
