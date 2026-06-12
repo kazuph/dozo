@@ -54,6 +54,38 @@ pub fn split_to_lines(input : String) -> Array[String] {
   result
 }
 
+///| Quote the source line a review comment refers to (0-based row).
+///  Trims surrounding whitespace/CR and caps at 300 chars so the verdict
+///  YAML stays readable. Out-of-range rows yield "" (line gets omitted).
+pub fn quote_source_line(lines : Array[String], row : Int) -> String {
+  if row < 0 || row >= lines.length() {
+    return ""
+  }
+  let chars = lines[row].to_array()
+  let mut start = 0
+  let mut end = chars.length()
+  while start < end &&
+        (chars[start] == ' ' || chars[start] == '\t' || chars[start] == '\r') {
+    start = start + 1
+  }
+  while end > start &&
+        (chars[end - 1] == ' ' ||
+        chars[end - 1] == '\t' ||
+        chars[end - 1] == '\r') {
+    end = end - 1
+  }
+  let truncated = end - start > 300
+  let limit = if truncated { start + 300 } else { end }
+  let buf = StringBuilder::new()
+  for i = start; i < limit; i = i + 1 {
+    buf.write_char(chars[i])
+  }
+  if truncated {
+    buf.write_string("...")
+  }
+  buf.to_string()
+}
+
 ///| Safe path containment check that avoids prefix bypass.
 ///  Ensures `child` is either exactly `base` or lives strictly under `base`
 ///  by comparing with a trailing path separator — so `/a/b` does NOT match `/a/bad`.

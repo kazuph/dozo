@@ -3,6 +3,7 @@ struct ServerContext {
   file_path : String
   filename : String
   mode : @core.FileMode
+  source_text : String // raw content for stdin servers ("" for file servers, which re-read on demand)
   mut port : Int
   mut html_cache : String
   sse_clients : Array[JsValue]
@@ -612,6 +613,7 @@ fn start_stdin_server(content : String, port : Int, no_open : Bool) -> Unit {
     file_path: "<stdin>",
     filename: "stdin",
     mode: @core.FileMode::Diff,
+    source_text: content,
     port,
     html_cache: html,
     sse_clients: [],
@@ -634,6 +636,7 @@ fn start_file_server(file_path : String, port : Int, no_open : Bool) -> Unit {
     file_path: resolved,
     filename,
     mode,
+    source_text: "",
     port,
     html_cache: "",
     sse_clients: [],
@@ -1142,13 +1145,31 @@ fn handle_submit(ctx : ServerContext, body : String) -> Unit {
   // Parse comments from JSON body
   let raw_comments = json_parse_comments(body)
   let comments : Array[@core.Comment] = []
+  // Source lines for quoting: agents consuming the verdict YAML only get a
+  // row number otherwise, and resolving it against the file themselves is
+  // error-prone (the documented schema promises `value: the line content`).
+  let source_lines : Array[String] = if raw_comments.length() > 0 {
+    if ctx.file_path == "<stdin>" {
+      @core.split_to_lines(ctx.source_text)
+    } else {
+      @core.split_to_lines(decode_file(ctx.file_path, encoding_override.val))
+    }
+  } else {
+    []
+  }
   for c in raw_comments {
     if c.length() >= 3 {
+      let row = @core.parse_int_safe(c[0])
+      let sent_value = if c.length() > 3 { c[3] } else { "" }
       comments.push({
-        row: @core.parse_int_safe(c[0]),
+        row,
         col: @core.parse_int_safe(c[1]),
         text: c[2],
-        value: if c.length() > 3 { c[3] } else { "" },
+        value: if sent_value.length() > 0 {
+          sent_value
+        } else {
+          @core.quote_source_line(source_lines, row)
+        },
       })
     }
   }

@@ -54,3 +54,48 @@ test "split_to_lines" {
     #|c
   ))
 }
+
+test "quote_source_line basic" {
+  let lines = ["# Title", "", "  Hello world  ", "last"]
+  inspect(quote_source_line(lines, 0), content=(
+    #|# Title
+  ))
+  inspect(quote_source_line(lines, 2), content=(
+    #|Hello world
+  ))
+}
+
+test "quote_source_line empty line yields empty" {
+  let lines = ["a", "", "\t \r"]
+  inspect(quote_source_line(lines, 1), content=(
+    #|
+  ))
+  inspect(quote_source_line(lines, 2), content=(
+    #|
+  ))
+}
+
+test "quote_source_line out of range" {
+  let lines = ["only"]
+  inspect(quote_source_line(lines, -1), content=(
+    #|
+  ))
+  inspect(quote_source_line(lines, 1), content=(
+    #|
+  ))
+}
+
+test "quote_source_line truncates at 300 chars" {
+  let buf = StringBuilder::new()
+  for i = 0; i < 350; i = i + 1 {
+    buf.write_char('x')
+  }
+  let lines = [buf.to_string()]
+  let quoted = quote_source_line(lines, 0)
+  inspect(quoted.length(), content=(
+    #|303
+  ))
+  inspect(quoted.has_suffix("..."), content=(
+    #|true
+  ))
+}

@@ -540,6 +540,8 @@ console.log("\n--- Submit Data Persistence ---");
       comments: [
         { row: 1, col: 0, text: "line 1 comment", image: "" },
         { row: 3, col: 0, text: "line 3 comment with {braces} in text", image: "" },
+        // row 2 of TEST_MD is "Test content" -- server must quote it as `value:`
+        { row: 2, col: 0, text: "comment with quoted line", image: "" },
       ],
       summaryImages: [],
       yunomiAnswers: { "q1": "answer to question 1" },
@@ -561,6 +563,7 @@ console.log("\n--- Submit Data Persistence ---");
     assert(sStdout.includes("e2e test review summary"), "Submit: server output includes summary");
     assert(sStdout.includes("answer to question 1"), "Submit: answers object serialized as JSON, not coerced");
     assert(!sStdout.includes("[object Object]"), "Submit: no '[object Object]' coercion in YAML output");
+    assert(sStdout.includes("value: Test content"), "Submit: comment quotes the source line it refers to");
   } catch (err: unknown) {
     failed++;
     console.error(`  FAIL: Submit test: ${(err as Error).message}`);
